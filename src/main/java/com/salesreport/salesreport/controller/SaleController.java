@@ -15,15 +15,11 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
 
-    // Endpoint for getting all sales
-    @GetMapping("/sales")
-    public List<Sale> getSales() {
-        return saleService.getAllSales();
-    }
-
-    // Endpoint for adding new sales
-    @PostMapping("/sales")
-    public Sale addSale(@RequestBody Sale sale) {
-        return saleService.saveSale(sale);
+    // Endpoint for HTML view
+    @GetMapping("/sales-report")
+    public String getSalesReport(Model model) {
+        List<Sale> sales = saleService.getAllSales();
+        model.addAttribute("sales", sales); // Send data to view
+        return "sales"; // HTML Template name (sales.html)
     }
 }

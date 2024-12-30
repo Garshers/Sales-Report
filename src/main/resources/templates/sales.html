@@ -2,24 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Sales Report</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
     <h1>Sales Report</h1>
     <table>
         <thead>
             <tr>
-                <th>Product Name | </th>
-                <th>Quantity | </th>
+                <th>Product Name</th>
+                <th>Quantity</th>
                 <th>Price</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="sales : ${sales}">
-                <td th:text="${sales.productName}"></td>
-                <td th:text="${sales.quantity}"></td>
-                <td th:text="${sales.price}"></td>
+            <tr th:each="sale : ${sales}">
+                <td th:text="${sale.productName}"></td>
+                <td th:text="${sale.quantity}"></td>
+                <td th:text="${sale.price}"></td>
             </tr>
         </tbody>
     </table>
+    <a href="/">Go to Homepage</a>
 </body>
 </html>
