@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    gap: 20px;
 }
 
 /* General page settings */
@@ -11,6 +12,10 @@ body {
     background-color: #f4f4f9;
     padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:  center;
 }
 
 /* Header styling */
@@ -22,10 +27,11 @@ h1 {
 /* Table styling */
 table {
     width: 40%;
+    height: auto;
     margin: 0 auto;
     border-collapse: collapse;
     background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Header cell styling */
@@ -55,17 +61,20 @@ tbody tr:hover {
     background-color: #e2f7e2;
 }
 
-/* Styling for the link at the bottom of the page */
+/* Style for the "Go to sales page" link */
 a {
-    display: inline-block;
-    margin-top: 20px;
+    width: fit-content;
+    font-size: 1.2em;
     color: #4CAF50;
     text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
+    border: 2px solid #4CAF50;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
 /* Hover effect for the link */
 a:hover {
-    color: #333;
+    background-color: #4CAF50;
+    color: white;
 }

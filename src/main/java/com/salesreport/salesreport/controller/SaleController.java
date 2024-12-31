@@ -1,5 +1,6 @@
 package com.salesreport.salesreport.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,26 @@ public class SaleController {
         // Returning the name of the view template (in this case, "sales").
         // Thymeleaf will use this name to locate the appropriate HTML file (e.g., sales.html) and render it.
         return "sales";  // The "sales" view will display the list of sales.
+    }
+    // Mthod for the charts page
+    @GetMapping("/charts")
+    public String getSalesCharts(Model model) {
+        // Assuming the service can calculate or provide chart data
+        List<Sale> sales = saleService.getAllSales();
+
+        // Prepare data for the chart (e.g., product names as labels and total sales as values)
+        List<String> labels = new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+
+        // Aggregate data for the chart
+        for (Sale sale : sales) {
+            labels.add(sale.getProductName()); // Product names as labels
+            values.add(sale.getPrice() * sale.getQuantity()); // Total sales for each product
+        }
+
+        // Add chart data to the model
+        model.addAttribute("chartData", new ChartData(labels, values));
+        
+        return "charts";  // Render the charts page
     }
 }

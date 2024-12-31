@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sales Charts</title>
+    <link rel="stylesheet" type="text/css" href="/css/chartsStyle.css">
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h1>Sales Charts</h1>
+
+    <!-- Buttons for filtering -->
+    <div>
+        <button id="filterBySmallestSum" onclick="filterBySmallestSum()">Filter by Smallest Sum</button>
+        <button id="filterByLargestSum" onclick="filterByLargestSum()">Filter by Largest Sum</button>
+    </div>
+
+    <!-- Create a canvas element for rendering the chart -->
+    <div class="chart-container">
+        <canvas id="salesChart" width="400" height="200"></canvas>
+    </div>
+
+    <a href="/sales">Go to sales page</a>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+    // Get the data passed from the controller (using Thymeleaf variables)
+    var labels = /*[[${chartData.labels}]]*/ [];  // Labels for the chart (e.g., product names)
+    var dataValues = /*[[${chartData.values}]]*/ [];  // Sales values to be charted (e.g., total sales)
+
+    // Create a global reference to the chart to update it dynamically
+    var chart = null;
+
+    // Function to create the chart with dynamic data
+    function createChart(labels, dataValues) {
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        
+        // If the chart already exists, destroy it to avoid multiple charts on the page
+        if (chart) {
+            chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
+            type: 'bar',  // Type of chart (e.g., bar, line, pie)
+            data: {
+                labels: labels,  // Labels for the x-axis (product names)
+                datasets: [{
+                    label: 'Sales Data',
+                    data: dataValues,  // Sales data (calculated total sales per product)
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true  // Start the y-axis at zero
+                    }
+                }
+            }
+        });
+    }
+
+    // Initially create the chart with the provided data
+    createChart(labels, dataValues);
+
+    // Filter by smallest sum (sort the data by the smallest sales value)
+    function filterBySmallestSum() {
+        // Combine labels and data into an array of objects
+        var sortedData = labels.map(function(label, index) {
+            return {
+                label: label,
+                data: dataValues[index]
+            };
+        });
+
+        // Sort the array by the 'data' values in ascending order (smallest sum first)
+        sortedData.sort(function(a, b) {
+            return a.data - b.data;  // Sort by data (sales value)
+        });
+
+        // Extract the sorted labels and data for the chart
+        var finalLabels = sortedData.map(function(item) {
+            return item.label;
+        });
+        var finalData = sortedData.map(function(item) {
+            return item.data;
+        });
+
+        // Re-create the chart with the sorted data (smallest sum first)
+        createChart(finalLabels, finalData);
+    }
+
+    // Filter by largest sum (sort the data by the largest sales value)
+    function filterByLargestSum() {
+        // Combine labels and data into an array of objects
+        var sortedData = labels.map(function(label, index) {
+            return {
+                label: label,
+                data: dataValues[index]
+            };
+        });
+
+        // Sort the array by the 'data' values in descending order (largest sum first)
+        sortedData.sort(function(a, b) {
+            return b.data - a.data;  // Sort by data (sales value)
+        });
+
+        // Extract the sorted labels and data for the chart
+        var finalLabels = sortedData.map(function(item) {
+            return item.label;
+        });
+        var finalData = sortedData.map(function(item) {
+            return item.data;
+        });
+
+        // Re-create the chart with the sorted data (largest sum first)
+        createChart(finalLabels, finalData);
+    }
+</script>
