@@ -1,51 +1,71 @@
+/* Reset margins and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General page settings */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f9;
-    color: #333;
-}
-
-h1 {
+    padding: 20px;
     text-align: center;
-    color: #444;
-    margin-bottom: 20px;
 }
 
+/* Header styling */
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Table styling */
 table {
-    width: 80%;
+    width: 40%;
     margin: 0 auto;
     border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
-    padding: 10px 15px;
+/* Header cell styling */
+th {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
     text-align: left;
+    font-size: 16px;
+    border: 1px solid #ddd;
 }
 
-table th {
-    background-color: #007bff;
-    color: #fff;
+/* Data cell styling */
+td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
 }
 
-table tr:nth-child(even) {
+/* Styling for even rows */
+tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-table tr:hover {
-    background-color: #f1f1f1;
+/* Hover effect for rows */
+tbody tr:hover {
+    background-color: #e2f7e2;
 }
 
+/* Styling for the link at the bottom of the page */
 a {
-    display: block;
-    text-align: center;
+    display: inline-block;
     margin-top: 20px;
+    color: #4CAF50;
     text-decoration: none;
-    color: #007bff;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
+/* Hover effect for the link */
 a:hover {
-    text-decoration: underline;
+    color: #333;
 }

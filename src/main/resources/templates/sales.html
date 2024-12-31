@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Sales Report</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
     <h1>Sales Report</h1>
@@ -15,6 +15,7 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Iterate over the 'sales' list and for each item, display the product's details -->
             <tr th:each="sale : ${sales}">
                 <td th:text="${sale.productName}"></td>
                 <td th:text="${sale.quantity}"></td>
@@ -22,6 +23,6 @@
             </tr>
         </tbody>
     </table>
-    <a href="/">Go to Homepage</a>
+    <a href="/charts">Go to chart page</a>
 </body>
 </html>
