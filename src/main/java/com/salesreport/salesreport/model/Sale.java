@@ -1,72 +1,52 @@
 package com.salesreport.salesreport.model;
 
+import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-// The @Entity annotation indicates that this class is an entity class.
-// An entity is a Java object that will be mapped to a database table.
-// In this case, the Sale class represents a record in the "sale" table in the database.
+// The @Entity annotation indicates that this class is an entity class,
+// which means it will be mapped to a database table. In this case, the Sale
+// class represents a record in the "accumulated_sale" table.
 @Entity
-// The @Table annotation specifies the name of the table in the database that this entity will be mapped to.
-// Here, it is specifying that the entity "Sale" will be mapped to the "sale" table.
-@Table(name = "sale")
+
+// The @Table annotation specifies the name of the table in the database 
+// to which this entity will be mapped. Here, it is specifying that 
+// the entity "Sale" corresponds to the "accumulated_sale" table.
+@Table(name = "accumulated_sale")
 public class Sale {
 
-    // The @Id annotation marks this field as the primary key for the entity.
-    // This is the unique identifier for each record in the "sale" table.
+    // The @Id annotation designates this field as the primary key for the entity.
+    // This primary key uniquely identifies each record in the "accumulated_sale" table.
     @Id
-    // The @GeneratedValue annotation specifies how the primary key should be generated.
-    // In this case, the strategy used is GenerationType.IDENTITY, which means the database will auto-generate the value for the primary key.
+
+    // The @GeneratedValue annotation defines how the primary key should be generated.
+    // In this case, GenerationType.IDENTITY is used, meaning the database 
+    // will automatically generate the value for the primary key.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    // These fields represent the properties of the sale. Each will be mapped to a column in the "sale" table.
-    private String productName;  // The name of the product in the sale.
-    private int quantity;        // The quantity of the product sold.
-    private double price;        // The price of the product in the sale.
+    @Column(name = "product_id")
+    private Long productId;
 
-    // Getters and setters for each field.
+    @Column(name = "total_quantity_sold")
+    private int totalQuantitySold;
 
-    // Getter for the id field.
-    public Long getId() {
-        return id;
+    @Column(name = "total_profit")
+    private BigDecimal totalProfit; // BigDecimal is more accurate than floating-point types
+
+    public Long getProductId() {
+        return productId;
     }
 
-    // Setter for the id field.
-    public void setId(Long id) {
-        this.id = id;
+    public int getTotalQuantitySold() {
+        return totalQuantitySold;
     }
 
-    // Getter for the productName field.
-    public String getProductName() {
-        return productName;
-    }
-
-    // Setter for the productName field.
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    // Getter for the quantity field.
-    public int getQuantity() {
-        return quantity;
-    }
-
-    // Setter for the quantity field.
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    // Getter for the price field.
-    public double getPrice() {
-        return price;
-    }
-
-    // Setter for the price field.
-    public void setPrice(double price) {
-        this.price = price;
+    public BigDecimal getTotalProfit() {
+        return totalProfit;
     }
 }

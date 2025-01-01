@@ -91,7 +91,7 @@ This will show the process ID (PID) of the application using port 8080.
 
 1. To kill the process, use the kill command with the PID obtained from the previous step:
     ```bash
-   kill -9 <PID>
+   taskkill /PID <PID> /F
    ```
 Replace <PID> with the process ID.
 

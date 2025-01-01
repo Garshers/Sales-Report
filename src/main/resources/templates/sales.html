@@ -6,23 +6,27 @@
 </head>
 <body>
     <h1>Sales Report</h1>
+    
+    <!-- Table displaying sales data -->
     <table>
         <thead>
             <tr>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
+                <th>Product ID</th>
+                <th>Total Quantity Sold</th>
+                <th>Total Profit</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Iterate over the 'sales' list and for each item, display the product's details -->
+            <!-- Iterate over the 'sales' list and display each sale's details -->
             <tr th:each="sale : ${sales}">
-                <td th:text="${sale.productName}"></td>
-                <td th:text="${sale.quantity}"></td>
-                <td th:text="${sale.price}"></td>
+                <td th:text="${sale.productId}"></td>
+                <td th:text="${sale.totalQuantitySold}"></td>
+                <td th:text="${sale.totalProfit}"></td>
             </tr>
         </tbody>
     </table>
+    
+    <!-- Link to navigate to the charts page -->
     <a href="/charts">Go to chart page</a>
 </body>
 </html>

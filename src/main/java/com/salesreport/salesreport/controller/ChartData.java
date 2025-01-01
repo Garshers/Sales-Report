@@ -1,13 +1,14 @@
 package com.salesreport.salesreport.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ChartData {
     private List<String> labels;
-    private List<Double> values;
+    private List<BigDecimal> values;
 
     // Constructor
-    public ChartData(List<String> labels, List<Double> values) {
+    public ChartData(List<String> labels, List<BigDecimal> values) {
         this.labels = labels;
         this.values = values;
     }
@@ -21,11 +22,19 @@ public class ChartData {
         this.labels = labels;
     }
 
-    public List<Double> getValues() {
+    public List<BigDecimal> getValues() {
         return values;
     }
 
-    public void setValues(List<Double> values) {
+    public void setValues(List<BigDecimal> values) {
         this.values = values;
+    }
+
+    @Override
+    public String toString() {
+        return "ChartData{" +
+                "labels=" + this.labels +
+                ", values=" + this.values +
+                '}';
     }
 }

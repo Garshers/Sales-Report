@@ -15,6 +15,6 @@ public class SalesreportApplication {
         // This method launches the Spring Boot application with the provided arguments.
         SpringApplication.run(SalesreportApplication.class, args);
         
-		System.out.println("Success");
+		System.out.println("-----Success-----");
     }
 }

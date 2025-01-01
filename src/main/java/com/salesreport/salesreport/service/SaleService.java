@@ -9,28 +9,27 @@ import com.salesreport.salesreport.model.Sale;
 import com.salesreport.salesreport.repository.SaleRepository;
 
 // The @Service annotation indicates that this class is a service component in the Spring application.
-// It is used to define business logic and operations that interact with the data layer (repositories),
-// but is not responsible for handling HTTP requests (controllers) or directly managing the persistence logic (repositories).
+// The service layer is responsible for business logic, which often involves operations that interact with the data layer (repositories),
+// but it doesn't handle HTTP requests (which is the responsibility of controllers) or directly manage persistence (which is handled by repositories).
 @Service
 public class SaleService {
     
-    // The @Autowired annotation automatically injects the dependency (SaleRepository) into the SaleService class.
-    // This means that Spring will automatically provide an instance of SaleRepository when it creates the SaleService object.
-    // With this approach, we don't need to manually create or pass the SaleRepository object. Spring manages it for us.
+    // The @Autowired annotation automatically injects the SaleRepository dependency into the SaleService class.
+    // Spring manages the creation of SaleRepository and its injection into SaleService, so we don't need to manually create it.
     @Autowired
     private SaleRepository saleRepository;
 
     // Method to get all sales data from the database
-    // This method calls the findAll() method of the SaleRepository, which is implemented using Hibernate
-    // Hibernate manages the conversion between Java objects and database records.
+    // This method uses the findAll() method of SaleRepository, which is implemented using Hibernate.
+    // Hibernate takes care of converting between Java objects and database records.
     public List<Sale> getAllSales() {
-        return saleRepository.findAll();  // This retrieves all the Sale objects from the database
+        return saleRepository.findAll();  // Retrieve all Sale objects from the database
     }
 
     // Method to save a new sale entry to the database
-    // This method calls the save() method of the SaleRepository, which is also handled by Hibernate
-    // Hibernate will automatically insert the new Sale object into the corresponding table in the database.
+    // This method calls the save() method of SaleRepository, which is handled by Hibernate.
+    // Hibernate automatically inserts or updates the Sale object in the database.
     public Sale saveSale(Sale sale) {
-        return saleRepository.save(sale);  // This saves the Sale object to the database
+        return saleRepository.save(sale);  // Save the Sale object to the database
     }
 }

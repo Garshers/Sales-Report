@@ -3,13 +3,10 @@ package com.salesreport.salesreport.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.salesreport.salesreport.model.Sale;
+import com.salesreport.salesreport.model.Stock;
 
-// The @Repository annotation marks this interface as a Spring Data repository, 
-// responsible for data access. It enables easy interaction with the database 
-// through methods provided by Spring Data JPA.
 @Repository
-public interface SaleRepository extends JpaRepository<Sale, Long> {
+public interface StockRepository extends JpaRepository<Stock, Long> {
     
     // JpaRepository provides default implementations for common data management methods, 
     // such as:
