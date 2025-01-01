@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.salesreport.salesreport.dto.SaleStockDTO;
 import com.salesreport.salesreport.model.Sale;
 import com.salesreport.salesreport.model.Stock;
 import com.salesreport.salesreport.service.SaleService;
@@ -37,22 +38,43 @@ public class SaleController {
     // When a GET request is made to the "/sales" URL, this method will be invoked.
     @GetMapping("/sales")
     public String getSalesReport(Model model) {
-        // Calling the SaleService to get a list of all sales from the database.
-        // SaleService handles the business logic and fetches the data from the repository.
+        // Fetch sales data and stock data
         List<Sale> sales = saleService.getAllSales();
+        List<Stock> stock = stockService.getAllStocks();
+
+        // List to hold combined data
+        List<SaleStockDTO> saleStockList = new ArrayList<>();
+
+        // Combine data from Sale and Stock based on productId
+        for (Sale sale : sales) {
+            // Find the corresponding product in stock based on productId
+            Stock correspondingStock = stock.stream()
+                    .filter(s -> s.getProductId().equals(sale.getProductId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (correspondingStock != null) {
+                // Create a DTO with combined data
+                SaleStockDTO saleStockDTO = new SaleStockDTO(
+                        correspondingStock.getProductType() + " " + correspondingStock.getProductName(), 
+                        sale.getTotalQuantitySold(), 
+                        sale.getTotalProfit(), 
+                        correspondingStock.getProductId()
+                );
+                saleStockList.add(saleStockDTO);
+            }
+        }
+
+        // Add the combined data to the model
+        model.addAttribute("saleStockList", saleStockList);
         
-        // Adding the sales data to the Model object with the attribute name "sales".
-        // This allows the sales data to be available for rendering in the view (e.g., Thymeleaf template).
-        model.addAttribute("sales", sales);
-        
-        // Returning the name of the view template (in this case, "sales").
-        // Thymeleaf will use this to locate the corresponding HTML file (e.g., sales.html) and render it.
-        return "sales";  // The "sales" view will display the list of sales.
+        // Return the view name that will display the combined data
+        return "sales";  // The "sales" view will display the combined data
     }
+
 
     @GetMapping("/charts")
     public String getSalesCharts(Model model) {
-        System.out.println("Inside getSalesCharts method");
         // Assuming the service can provide chart data (e.g., sales data for visualization)
         List<Sale> sales = saleService.getAllSales();
         List<Stock> stock = stockService.getAllStocks();
@@ -74,13 +96,9 @@ public class SaleController {
                 totalProfit.add(sale.getTotalProfit());  // Add total profit from sale
             }
         }
-        System.out.println("--------------------------- After for loop ---------------------------------");
 
         // Create ChartData object
         ChartData chartData = new ChartData(productNames, totalProfit);
-
-        // Print chart data to console (this will now use the toString method)
-        System.out.println(chartData);  // This will call chartData.toString() and print the data
 
         // Adding chart data to the model
         model.addAttribute("chartData", chartData);

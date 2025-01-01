@@ -12,16 +12,18 @@
         <thead>
             <tr>
                 <th>Product ID</th>
-                <th>Total Quantity Sold</th>
+                <th>Product Name</th>
+                <th>Quantity Sold</th>
                 <th>Total Profit</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Iterate over the 'sales' list and display each sale's details -->
-            <tr th:each="sale : ${sales}">
-                <td th:text="${sale.productId}"></td>
-                <td th:text="${sale.totalQuantitySold}"></td>
-                <td th:text="${sale.totalProfit}"></td>
+            <!-- Iterate over the combined sales and stock list and display details -->
+            <tr th:each="saleStock : ${saleStockList}">
+                <td th:text="${saleStock.productId}"></td>
+                <td th:text="${saleStock.productName}"></td>
+                <td th:text="${saleStock.quantitySold}"></td>
+                <td th:text="${saleStock.totalProfit}"></td>
             </tr>
         </tbody>
     </table>
