@@ -31,6 +31,14 @@ CREATE TABLE `discounts` (
   PRIMARY KEY (`discount_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Creating the discounts table
+CREATE TABLE `sales_persons` (
+  `sales_person_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `sales_person_name` VARCHAR(255) NOT NULL,
+  `sales_person_surname` DECIMAL(5,2) DEFAULT NULL, -- Discount in percentage
+  PRIMARY KEY (`sales_person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Creating the sales table
 CREATE TABLE `sales` (
   `sale_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -38,11 +46,13 @@ CREATE TABLE `sales` (
   `discount_id` INT(11) DEFAULT NULL, -- Linked to the discounts table
   `price` DECIMAL(10,2) NOT NULL, -- Sale price after discount
   `store_type` ENUM('Online', 'In-store') NOT NULL,
-  `salesperson` VARCHAR(100) DEFAULT NULL,
+  `sales_person_id` INT(11) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   FOREIGN KEY (`product_id`) REFERENCES `stock`(`product_id`)
     ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`discount_id`) REFERENCES `discounts`(`discount_id`)
+    ON DELETE SET NULL ON UPDATE CASCADE,
+  FOREIGN KEY (`sales_person_id`) REFERENCES `sales_persons`(`sales_person_id`)
     ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -109,6 +119,14 @@ INSERT INTO `discounts` (`discount_code`, `discount_percentage`, `discount_usd`)
 ('DISCOUNT50USD', NULL, 50.00), 
 ('DISCOUNT100USD', NULL, 100.00);
 
+-- Inserting 5 example sale_persons into the sale_persons table
+INSERT INTO `sales_persons` (`sales_person_name`, `sales_person_surname`) VALUES
+('Tim', 'Cook'),
+('Elon', 'Musk'),
+('Jensen', 'Huang'),
+('Lisa', 'Su'),
+('Warren', 'Buffet');
+
 -- Create trigger to automatically update `accumulated_sale`
 DELIMITER //
 CREATE TRIGGER `update_accumulated_sale` 
@@ -124,49 +142,48 @@ BEGIN
 END //
 DELIMITER ; -- Reset the delimiter back to the default
 
-INSERT INTO `sales` (`product_id`, `discount_id`, `price`, `store_type`, `salesperson`) VALUES
+INSERT INTO `sales` (`product_id`, `discount_id`, `price`, `store_type`, `sales_person_id`) VALUES
 (1, 1, 1.00, 'Online', NULL),
-(1, 2, 1.00, 'In-store', 'Elon Musk'),
+(1, 2, 1.00, 'In-store', 1),
 (2, NULL, 1.00, 'Online', NULL),
-(3, 3, 1.00, 'In-store', 'Tim Cook'),
+(3, 3, 1.00, 'In-store', 5),
 (3, NULL, 1.00, 'Online', NULL),
-(4, 2, 1.00, 'In-store', 'Satya Nadella'),
+(4, 2, 1.00, 'In-store', 2),
 (5, NULL, 1.00, 'Online', NULL),
-(5, 4, 1.00, 'In-store', 'Sundar Pichai'),
-(6, NULL, 1.00, 'In-store', 'Elon Musk'),
+(5, 4, 1.00, 'In-store', 3),
+(6, NULL, 1.00, 'In-store', 1),
 (7, 1, 1.00, 'Online', NULL),
-(7, NULL, 1.00, 'In-store', 'Satya Nadella'),
+(7, NULL, 1.00, 'In-store', 2),
 (8, 4, 1.00, 'Online', NULL),
-(8, 3, 1.00, 'In-store', 'Tim Cook'),
+(8, 3, 1.00, 'In-store', 4),
 (9, NULL, 1.00, 'Online', NULL),
 (9, 3, 1.00, 'Online', NULL),
 (10, NULL, 1.000, 'Online', NULL),
 (10, NULL, 1.00, 'Online', NULL),
 (10, 1, 1.00, 'Online', NULL),
-(10, NULL, 1.00, 'In-store', 'Sundar Pichai'),
+(10, NULL, 1.00, 'In-store', 3),
 (11, 2, 1.00, 'Online', NULL),
-(12, 1, 1.00, 'In-store', 'Elon Musk'),
+(12, 1, 1.00, 'In-store', 1),
 (13, 5, 1.00, 'Online', NULL),
-(14, NULL, 1.00, 'In-store', 'Tim Cook'),
+(14, NULL, 1.00, 'In-store', 4),
 (14, 3, 1.00, 'Online', NULL),
 (16, NULL, 1.00, 'Online', NULL),
-(16, NULL, 1.00, 'In-store', 'Sundar Pichai'),
+(16, NULL, 1.00, 'In-store', 3),
 (17, 3, 1.00, 'Online', NULL),
 (18, NULL, 1.00, 'Online', NULL),
-(19, NULL, 1.0, 'In-store', 'Tim Cook'),
-(20, 2, 1.00, 'In-store', 'Elon Musk'),
+(19, NULL, 1.0, 'In-store', 5),
+(20, 2, 1.00, 'In-store', 1),
 (20, NULL, 1.00, 'Online', NULL),
-(21, 3, 1.00, 'In-store', 'Sundar Pichai'),
+(21, 3, 1.00, 'In-store', 3),
 (22, NULL, 1.00, 'Online', NULL),
-(23, 4, 1.00, 'In-store', 'Satya Nadella'),
-(23, NULL, 1.00, 'In-store', 'Satya Nadella'),
+(23, 4, 1.00, 'In-store', 2),
+(23, NULL, 1.00, 'In-store', 2),
 (23, 4, 1.00, 'Online', NULL),
 (24, 5, 1.00, 'Online', NULL),
 (24, 5, 1.00, 'Online', NULL),
-(25, NULL, 1.00, 'In-store', 'Elon Musk');
+(25, NULL, 1.00, 'In-store', 1);
 
 DELIMITER //
-
 -- Create trigger to automatically update accumulated_sale after price update in sales
 CREATE TRIGGER `update_accumulated_sale_after_price_update`
 AFTER UPDATE ON `sales`
@@ -181,9 +198,9 @@ BEGIN
     WHERE `product_id` = NEW.product_id;
   END IF;
 END //
-
 DELIMITER ; -- Reset the delimiter back to the default
 
+-- Update price of a sale (price from stock and discount)
 UPDATE `sales` s
 JOIN `stock` st ON s.product_id = st.product_id
 LEFT JOIN `discounts` d ON s.discount_id = d.discount_id
