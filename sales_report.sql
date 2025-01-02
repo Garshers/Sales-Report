@@ -35,7 +35,7 @@ CREATE TABLE `discounts` (
 CREATE TABLE `sales_persons` (
   `sales_person_id` INT(11) NOT NULL AUTO_INCREMENT,
   `sales_person_name` VARCHAR(255) NOT NULL,
-  `sales_person_surname` DECIMAL(5,2) DEFAULT NULL, -- Discount in percentage
+  `sales_person_surname` VARCHAR(255) DEFAULT NULL, -- Discount in percentage
   PRIMARY KEY (`sales_person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

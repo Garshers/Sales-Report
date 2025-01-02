@@ -9,44 +9,88 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-// The @Entity annotation indicates that this class is an entity class,
-// which means it will be mapped to a database table. In this case, the Sale
-// class represents a record in the "accumulated_sale" table.
 @Entity
-
-// The @Table annotation specifies the name of the table in the database 
-// to which this entity will be mapped. Here, it is specifying that 
-// the entity "Sale" corresponds to the "accumulated_sale" table.
-@Table(name = "accumulated_sale")
+@Table (name = "sales")
 public class Sale {
-
-    // The @Id annotation designates this field as the primary key for the entity.
-    // This primary key uniquely identifies each record in the "accumulated_sale" table.
     @Id
-
-    // The @GeneratedValue annotation defines how the primary key should be generated.
-    // In this case, GenerationType.IDENTITY is used, meaning the database 
-    // will automatically generate the value for the primary key.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "sale_id")
+    private Long saleId; 
+    
     @Column(name = "product_id")
-    private Long productId;
+    private Long productId;  
 
-    @Column(name = "total_quantity_sold")
-    private int totalQuantitySold;
+    @Column(name = "discount_id")
+    private Long discountId;  
+    
+    @Column(name = "price")
+    private BigDecimal price; 
 
-    @Column(name = "total_profit")
-    private BigDecimal totalProfit; // BigDecimal is more accurate than floating-point types
+    @Column(name = "store_type")
+    private String storeType;  
+    
+    @Column(name = "sales_person_id")
+    private Long salesPersonId;  
+    
+
+    public Long getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(Long saleId) {
+        this.saleId = saleId;
+    }
 
     public Long getProductId() {
         return productId;
     }
 
-    public int getTotalQuantitySold() {
-        return totalQuantitySold;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public BigDecimal getTotalProfit() {
-        return totalProfit;
+    public Long getDiscountId() {
+        return discountId;
     }
+
+    public void setDiscountId(Long discountId) {
+        this.discountId = discountId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getStoreType() {
+        return storeType;
+    }
+
+    public void setStoreType(String storeType) {
+        this.storeType = storeType;
+    }
+
+    public Long getSalesPersonId() {
+        return salesPersonId;
+    }
+
+    public void setSalesPersonId(Long salesPersonId) {
+        this.salesPersonId = salesPersonId;
+    }
+
+    @Override
+    public String toString() {
+        return "Sale{" +
+                "saleId=" + saleId +
+                ", productId=" + productId +
+                ", discountId=" + discountId +
+                ", price=" + price +
+                ", storeType='" + storeType + '\'' +
+                ", salesPersonId=" + salesPersonId +
+                '}';
+    }
+ 
 }

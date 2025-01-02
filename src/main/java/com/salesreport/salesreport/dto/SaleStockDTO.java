@@ -8,6 +8,7 @@ public class SaleStockDTO {
     private BigDecimal totalProfit;
     private long productId; 
 
+    // Constructor
     public SaleStockDTO(String productTypeName, int quantitySold, BigDecimal totalProfit, long productId) {
         if (totalProfit == null) {
             throw new IllegalArgumentException("totalProfit cannot be null");

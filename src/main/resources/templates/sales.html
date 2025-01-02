@@ -27,6 +27,23 @@
             </tr>
         </tbody>
     </table>
+
+    <!-- Section displaying sales person and their sales -->
+    <h2>Sales by Salesperson</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Sales Person</th>
+                <th>Total Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${salesPersonProfits}">
+            <td th:text="${entry.key}"></td>
+            <td th:text="${entry.value}"></td>
+        </tr>
+        </tbody>
+    </table>
     
     <!-- Link to navigate to the charts page -->
     <a href="/charts">Go to chart page</a>

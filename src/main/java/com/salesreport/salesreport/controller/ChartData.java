@@ -1,14 +1,14 @@
 package com.salesreport.salesreport.controller;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public class ChartData {
+public class ChartData<T> {
     private List<String> labels;
-    private List<BigDecimal> values;
+    private List<T> values;
+    // Changing data type to T, this enebles to use this class in more versitale manner
 
     // Constructor
-    public ChartData(List<String> labels, List<BigDecimal> values) {
+    public ChartData(List<String> labels, List<T> values) {
         this.labels = labels;
         this.values = values;
     }
@@ -22,11 +22,11 @@ public class ChartData {
         this.labels = labels;
     }
 
-    public List<BigDecimal> getValues() {
+    public List<T> getValues() {
         return values;
     }
 
-    public void setValues(List<BigDecimal> values) {
+    public void setValues(List<T> values) {
         this.values = values;
     }
 

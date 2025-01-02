@@ -3,9 +3,9 @@ package com.salesreport.salesreport.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.salesreport.salesreport.model.Sale;
+import com.salesreport.salesreport.model.SalesPerson;
 
 @Repository
-public interface SaleRepository extends JpaRepository<Sale, Long> {
-
+public interface SalesPersonRepository extends JpaRepository<SalesPerson, Long> {
 }
+
