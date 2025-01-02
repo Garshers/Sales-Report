@@ -33,8 +33,12 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 100%;
-    margin-bottom: 20px;
+    width: 100%; /* Dostosowuje szerokość do 100% kontenera nadrzędnego */
+    max-width: 800px; /* Maksymalna szerokość kontenera */
+    min-height: 400px;
+    max-height: 600px;
+    height: auto; /* Wysokość zależna od zawartości */
+    margin: 0 auto 20px auto; /* Wyśrodkowanie kontenera */
 }
 
 /* Style for the "Go to sales page" link */
@@ -69,4 +73,12 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .chart-container {
+        width: 90%; /* Zwiększa szerokość kontenera na mniejszych ekranach */
+        padding: 15px; /* Zmniejsza padding na mniejszych ekranach */
+    }
 }

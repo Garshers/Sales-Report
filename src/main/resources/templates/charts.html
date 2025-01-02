@@ -16,7 +16,7 @@
     </div>
 
     <div class="chart-container">
-        <canvas id="salesChart" width="600" height="300"></canvas>
+        <canvas id="salesChart"></canvas>
     </div>
 
     <a href="/sales">Go to sales page</a>
@@ -51,9 +51,26 @@
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false, 
                     scales: {
                         y: {
-                            beginAtZero: true  // Start the y-axis at zero
+                            beginAtZero: true, 
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' USD'; 
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.raw + ' USD';
+                                }
+                            }
                         }
                     }
                 }
