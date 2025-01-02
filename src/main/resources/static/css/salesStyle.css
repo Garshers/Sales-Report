@@ -27,7 +27,7 @@ h1 {
 /* Table styling */
 table {
     width: 80%;
-    max-width: 600px;
+    max-width: 800px;
     height: auto;
     margin: 0 auto;
     border-collapse: collapse;
@@ -78,4 +78,23 @@ a {
 a:hover {
     background-color: #4CAF50;
     color: white;
+}
+
+/* Style for the sort button */
+.sortBtn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
+    border: 1px solid darkgreen;
+}
+
+/* Hover effect for sort button */
+.sortBtn:hover {
+    background-color: #45a049;
 }

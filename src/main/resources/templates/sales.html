@@ -11,10 +11,10 @@
     <table>
         <thead>
             <tr>
-                <th>Product ID</th>
+                <th>Product ID <button id="sortBtn0" class="sortBtn" onclick="sortTable(0)">Sort</button></th>
                 <th>Product Name</th>
-                <th>Quantity Sold</th>
-                <th>Total Profit</th>
+                <th>Quantity Sold <button id="sortBtn2" class="sortBtn" onclick="sortTable(2)">Sort</button></th>
+                <th>Total Profit <button id="sortBtn3" class="sortBtn" onclick="sortTable(3)">Sort</button></th>
             </tr>
         </thead>
         <tbody>
@@ -38,10 +38,10 @@
             </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${salesPersonProfits}">
-            <td th:text="${entry.key}"></td>
-            <td th:text="${entry.value}"></td>
-        </tr>
+            <tr th:each="entry : ${salesPersonProfits}">
+                <td th:text="${entry.key}"></td>
+                <td th:text="${entry.value}"></td>
+            </tr>
         </tbody>
     </table>
     
@@ -49,3 +49,44 @@
     <a href="/charts">Go to chart page</a>
 </body>
 </html>
+
+<script>
+    // Function to sort the table
+    function sortTable(n) {
+        var table = document.querySelector("table tbody");                                      // Select the table body
+        var rows = Array.from(table.rows);                                                      // Convert the rows into an array
+        var ascending = document.getElementById("sortBtn" + n).classList.contains("ascending"); // Check if the button for the current column is in ascending state
+
+        // Sort the rows based on the content of the specified column (n)
+        var sortedRows = rows.sort(function(a, b) {
+            // Get the text content of the cells in the specified column
+            var aText = a.cells[n].innerText;
+            var bText = b.cells[n].innerText;
+            
+            // Convert text values to numbers if possible
+            aText = isNaN(aText) ? aText : parseFloat(aText);
+            bText = isNaN(bText) ? bText : parseFloat(bText);
+            
+            // Compare values and return the result based on the current sorting order
+            if (ascending) {
+                return aText > bText ? 1 : -1;
+            } else {
+                return aText < bText ? 1 : -1;
+            }
+        });
+
+        // Rebuild the table with the sorted rows
+        table.innerHTML = "";
+        sortedRows.forEach(function(row) {
+            table.appendChild(row);
+        });
+
+        // Toggle the button's state to reflect the current sorting order (ascending/descending)
+        var buttons = document.querySelectorAll(".sortBtn");
+        buttons.forEach(function(button) {
+            button.classList.remove("ascending", "descending");
+        });
+        document.getElementById("sortBtn" + n).classList.toggle("ascending", !ascending);
+        document.getElementById("sortBtn" + n).classList.toggle("descending", ascending);
+    }
+</script>
