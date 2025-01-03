@@ -87,4 +87,16 @@ public class Stock {
     public void setTotalProfit(Long productId) {
         this.productId = productId;
     }
+
+    @Override
+    public String toString() {
+        return "YourClassName{" +
+                "productId=" + productId +
+                ", productType='" + productType + '\'' +
+                ", productName='" + productName + '\'' +
+                ", manufacturerName='" + manufacturerName + '\'' +
+                ", manufacturerId='" + manufacturerId + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

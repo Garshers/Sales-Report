@@ -30,19 +30,19 @@ public class SalesPerson {
         this.salesPersonId = salesPersonId;
     }
 
-    public String getSalesPersonName() {
+    public String getName() {
         return salesPersonName;
     }
 
-    public void setSalesPersonName(String salesPersonName) {
+    public void setName(String salesPersonName) {
         this.salesPersonName = salesPersonName;
     }
 
-    public String getSalesPersonSurname() {
+    public String getSurname() {
         return salesPersonSurname;
     }
 
-    public void setSalesPersonSurname(String salesPersonSurname) {
+    public void setSurname(String salesPersonSurname) {
         this.salesPersonSurname = salesPersonSurname;
     }
 

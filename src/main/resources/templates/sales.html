@@ -38,9 +38,33 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="entry : ${salesPersonProfits}">
-                <td th:text="${entry.key}"></td>
-                <td th:text="${entry.value}"></td>
+            <tr th:each="sPProfits : ${salesPersonProfits}">
+                <td th:text="${sPProfits.key}"></td>
+                <td th:text="${sPProfits.value}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Section displaying every single individual sale -->
+    <h2>Individual Sales</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Sale ID</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Sales Person ID</th>
+                <th>Sales Person</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="s : ${salePersonsWithSaleDTOList}">
+                <td colspan="5">No data available</td><!--
+                <td th:text="${s.saleId}"></td>
+                <td th:text="${s.productTypeName}"></td>
+                <td th:text="${s.price}"></td>
+                <td th:text="${s.salesPersonId}"></td>
+                <td th:text="${s.salesPersonNameSurname}"></td>-->
             </tr>
         </tbody>
     </table>

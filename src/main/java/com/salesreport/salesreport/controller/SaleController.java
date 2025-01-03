@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.salesreport.salesreport.dto.SalePersonWithSaleDTO;
 import com.salesreport.salesreport.dto.SaleStockDTO;
 import com.salesreport.salesreport.model.AccumulatedSale;
 import com.salesreport.salesreport.model.Sale;
@@ -81,9 +82,6 @@ public class SaleController {
         
         List<Sale> sales = saleService.getAllSales();
         List<SalesPerson> salesPersons = salesPersonService.getAllSalesPersons();
-        
-        System.out.println("Sales size: " + sales.size());
-        System.out.println("SalesPersons size: " + salesPersons.size());
 
         // HashMap to store total profit for each salesperson
         HashMap<String, BigDecimal> salesPersonProfits = new HashMap<>();
@@ -94,18 +92,56 @@ public class SaleController {
             // Iterate over each sale and match it with the current salesperson
             for (Sale sale : sales) {
                 if (sale.getSalesPersonId() != null && sale.getSalesPersonId().equals(salesPerson.getSalesPersonId())) {
-                    System.out.println("Sale for " + salesPerson.getSalesPersonName() + ": " + sale.getPrice()); // Debug log
+                    System.out.println("Sale for " + salesPerson.getName() + ": " + sale.getPrice()); // Debug log
                     if (sale.getPrice() != null) {
                         totalProfit = totalProfit.add(sale.getPrice());
                     }
                 }
             }
-            System.out.println("Total profit for " + salesPerson.getSalesPersonName() + ": " + totalProfit); // Debug log
-            salesPersonProfits.put(salesPerson.getSalesPersonName() + " " + salesPerson.getSalesPersonSurname(), totalProfit);
+            salesPersonProfits.put(salesPerson.getName() + " " + salesPerson.getSurname(), totalProfit);
         }
 
         // Add the combined data to the model
         model.addAttribute("salesPersonProfits", salesPersonProfits);
+
+        //------------------------------------------------------------
+
+        List<SalePersonWithSaleDTO> salePersonsWithSaleDTOList = new ArrayList<>();
+
+        for (Sale sale : sales) {
+            // Find the corresponding salesperson based on salesPersonId
+            SalesPerson correspondingSalesPerson = salesPersons.stream()
+                    .filter(sp -> sp.getSalesPersonId().equals(sale.getSalesPersonId()))
+                    .findFirst()
+                    .orElse(null);
+
+            // Find the corresponding stock based on productId
+            Stock correspondingStock = stock.stream()
+                    .filter(st -> st.getProductId().equals(sale.getProductId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (correspondingSalesPerson != null && correspondingStock != null) {
+                SalePersonWithSaleDTO salePersonWithSaleDTO = new SalePersonWithSaleDTO(
+                        sale.getSaleId(),
+                        correspondingSalesPerson.getSalesPersonId(),
+                        correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname(),
+                        sale.getProductId(),
+                        sale.getPrice(),
+                        correspondingStock.getProductType() + " " + correspondingStock.getProductName()
+                );
+                salePersonsWithSaleDTOList.add(salePersonWithSaleDTO);
+            }
+        }
+        
+        //System.out.println("SalePersonsWithSaleDTOList: " + salePersonsWithSaleDTOList);
+        //model.addAttribute("salePersonsWithSaleDTOList", salePersonsWithSaleDTOList);
+        model.addAttribute("salePersonsWithSaleDTOList", salePersonsWithSaleDTOList);
+
+        List<SalePersonWithSaleDTO> salePersonsWithSaleDTOListFromModel = 
+            (List<SalePersonWithSaleDTO>) model.asMap().get("salePersonsWithSaleDTOList");
+
+        System.out.println("SalePersonsWithSaleDTOList: " + salePersonsWithSaleDTOListFromModel);
 
         // Return the view name that will display the combined data
         return "sales";  // The "sales" view will display the combined data

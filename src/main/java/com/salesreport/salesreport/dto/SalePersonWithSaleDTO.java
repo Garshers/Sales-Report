@@ -9,18 +9,30 @@ public class SalePersonWithSaleDTO {
     private String salesPersonNameSurname;
 
     // Variables from 'sales'
+    private Long saleId;
     private Long productId;
-    private String productTypeName;
     private BigDecimal price;
 
+    // Variables from 'stock'
+    private String productTypeName;
+
     // Constructor
-    public SalePersonWithSaleDTO(Long salesPersonId, String salesPersonNameSurname,
-                                Long productId, String productTypeName, BigDecimal price) {
+    public SalePersonWithSaleDTO(Long saleId, Long salesPersonId, String salesPersonNameSurname,
+                                Long productId, BigDecimal price, String productTypeName) {
+        this.saleId = saleId;
         this.salesPersonId = salesPersonId;
         this.salesPersonNameSurname = salesPersonNameSurname;
         this.productId = productId;
-        this.productTypeName = productTypeName;
         this.price = price;
+        this.productTypeName = productTypeName;
+    }
+
+    public Long getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(Long saleId) {
+        this.saleId = saleId;
     }
 
     public Long getSalesPersonId() {
@@ -61,5 +73,17 @@ public class SalePersonWithSaleDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "SalePersonWithSaleDTO{" +
+            "saleId=" + saleId +
+            ", salesPersonId=" + salesPersonId +
+            ", salesPersonNameSurname='" + salesPersonNameSurname + '\'' +
+            ", productId=" + productId +
+            ", price=" + price +
+            ", productTypeName='" + productTypeName + '\'' +
+            '}';
     }
 }
