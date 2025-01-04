@@ -8,13 +8,13 @@
     <h1>Sales Report</h1>
     
     <!-- Table displaying sales data -->
-    <table>
+    <table id="saleStockTable">
         <thead>
             <tr>
-                <th>Product ID <button id="sortBtn0" class="sortBtn" onclick="sortTable(0)">Sort</button></th>
-                <th>Product Name</th>
-                <th>Quantity Sold <button id="sortBtn2" class="sortBtn" onclick="sortTable(2)">Sort</button></th>
-                <th>Total Profit <button id="sortBtn3" class="sortBtn" onclick="sortTable(3)">Sort</button></th>
+                <th>Product ID <button id="sortBtn0" class="sortBtn" onclick="sortTable('saleStockTable', 0)">Sort</button></th>
+                <th>Product Name<button id="sortBtn1" class="sortBtn" onclick="sortTable('saleStockTable', 1)">Sort</button></th>
+                <th>Quantity Sold <button id="sortBtn2" class="sortBtn" onclick="sortTable('saleStockTable', 2)">Sort</button></th>
+                <th>Total Profit <button id="sortBtn3" class="sortBtn" onclick="sortTable('saleStockTable', 3)">Sort</button></th>
             </tr>
         </thead>
         <tbody>
@@ -29,15 +29,15 @@
     </table>
 
     <!-- Section displaying sales person and their sales -->
-    <h2>Sales by Salesperson</h2>
-    <table>
+    <table id="salesPersonsTable">
         <thead>
             <tr>
-                <th>Sales Person</th>
-                <th>Total Profit</th>
+                <th>Sales Person<button id="sortBtn0" class="sortBtn" onclick="sortTable('salesPersonsTable', 0)">Sort</button></th>
+                <th>Total Profit<button id="sortBtn1" class="sortBtn" onclick="sortTable('salesPersonsTable', 1)">Sort</button></th>
             </tr>
         </thead>
         <tbody>
+            <!-- Iterate through salesperson profits -->
             <tr th:each="sPProfits : ${salesPersonProfits}">
                 <td th:text="${sPProfits.key}"></td>
                 <td th:text="${sPProfits.value}"></td>
@@ -47,15 +47,15 @@
 
     <!-- Section displaying every single individual sale -->
     <h2>Individual Sales</h2>
-    <table>
+    <table id="salesTable">
         <thead>
             <tr>
-                <th>Sale ID</th>
-                <th>Product ID</th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Sales Person ID</th>
-                <th>Sales Person</th>
+                <th>Sale ID<button id="sortBtn0" class="sortBtn" onclick="sortTable('salesTable', 0)">Sort</button></th>
+                <th>Product ID<button id="sortBtn1" class="sortBtn" onclick="sortTable('salesTable', 1)">Sort</button></th>
+                <th>Product<button id="sortBtn2" class="sortBtn" onclick="sortTable('salesTable', 2)">Sort</button></th>
+                <th>Price<button id="sortBtn3" class="sortBtn" onclick="sortTable('salesTable', 3)">Sort</button></th>
+                <th>Sales Person ID<button id="sortBtn4" class="sortBtn" onclick="sortTable('salesTable', 4)">Sort</button></th>
+                <th>Sales Person<button id="sortBtn5" class="sortBtn" onclick="sortTable('salesTable', 5)">Sort</button></th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
             </tr>
         </tbody>-->
     </table>
-    
+
     <!-- Link to navigate to the charts page -->
     <a href="/charts">Go to chart page</a>
 </body>
@@ -98,21 +98,26 @@
 
 <script>
     // Function to sort the table
-    function sortTable(n) {
-        var table = document.querySelector("table tbody");                                      // Select the table body
-        var rows = Array.from(table.rows);                                                      // Convert the rows into an array
+    function sortTable(tableId, n) {
+        var table = document.getElementById(tableId).getElementsByTagName("tbody")[0]; // Select the table body
+        var rows = Array.from(table.rows); // Convert the rows into an array
         var ascending = document.getElementById("sortBtn" + n).classList.contains("ascending"); // Check if the button for the current column is in ascending state
-
+        
         // Sort the rows based on the content of the specified column (n)
         var sortedRows = rows.sort(function(a, b) {
-            // Get the text content of the cells in the specified column
-            var aText = a.cells[n].innerText;
+            var aText = a.cells[n].innerText; // Get the text content of the cells in the specified column
             var bText = b.cells[n].innerText;
             
-            // Convert text values to numbers if possible
-            aText = isNaN(aText) ? aText : parseFloat(aText);
-            bText = isNaN(bText) ? bText : parseFloat(bText);
-            
+            function isNumeric(value) {
+                return !isNaN(value) && value.trim() !== ''; // Checks if the value is a valid number
+            }
+    
+            // Check if the column contains numeric values and convert if necessary
+            if (isNumeric(aText) && isNumeric(bText)) {
+                aText = parseFloat(aText.replace(/[^\d.-]/g, '')); // Remove non-numeric characters
+                bText = parseFloat(bText.replace(/[^\d.-]/g, ''));
+            }
+
             // Compare values and return the result based on the current sorting order
             if (ascending) {
                 return aText > bText ? 1 : -1;
@@ -120,13 +125,13 @@
                 return aText < bText ? 1 : -1;
             }
         });
-
+    
         // Rebuild the table with the sorted rows
         table.innerHTML = "";
         sortedRows.forEach(function(row) {
             table.appendChild(row);
         });
-
+    
         // Toggle the button's state to reflect the current sorting order (ascending/descending)
         var buttons = document.querySelectorAll(".sortBtn");
         buttons.forEach(function(button) {
@@ -135,4 +140,4 @@
         document.getElementById("sortBtn" + n).classList.toggle("ascending", !ascending);
         document.getElementById("sortBtn" + n).classList.toggle("descending", ascending);
     }
-</script>
+</script>   

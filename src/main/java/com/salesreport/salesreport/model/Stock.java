@@ -59,10 +59,6 @@ public class Stock {
         return productId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
     public void setProductType(String productType) {
         this.productType = productType;
     }

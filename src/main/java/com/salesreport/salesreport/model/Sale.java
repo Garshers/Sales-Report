@@ -41,10 +41,6 @@ public class Sale {
         return productId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
     public Long getDiscountId() {
         return discountId;
     }

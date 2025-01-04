@@ -58,6 +58,55 @@ This project is built using the following technologies:
    - Ensure that your MySQL service is running.
    - Double-check your MySQL connection settings in the `application.properties` file.
    - Ensure that the database (`sales_report`) and the table (`sales`) exist.
+   - *"MySQL shutdown unexpectedly"* Error in XAMPP
+
+## Error Description
+You may encounter the following error in XAMPP Control Panel:
+   ```bash
+   [mysql] Error: MySQL shutdown unexpectedly.
+   [mysql] This may be due to a blocked port, missing dependencies,
+   [mysql] improper privileges, a crash, or a shutdown by another method.
+   [mysql] Press the Logs button to view error logs and check
+   [mysql] the Windows Event Viewer for more clues.
+   [mysql] If you need more help, copy and post this
+   [mysql] entire log window on the forums.
+   ```
+
+**Important:** Do not delete the `ibdata1` file as it contains critical data for your databases.
+
+---
+
+## Step-by-Step Fix
+
+1. **Stop MySQL Service:**
+   - Open XAMPP Control Panel.
+   - Stop the MySQL service if it is running.
+
+2. **Backup Existing Data:**
+   - Go to the `xampp/mysql` folder.
+   - Rename the `data` folder to `data_old`.
+
+3. **Restore from Backup:**
+   - Locate the `backup` folder inside `xampp/mysql`.
+   - Copy the `backup` folder and rename the copy to `data`.
+
+4. **Restore Your Databases:**
+   - Open the `data_old` folder.
+   - Copy all your database folders (except `mysql`, `performance_schema`, and `phpmyadmin`) into the new `data` folder.
+
+5. **Restore the `ibdata1` File:**
+   - Copy the `ibdata1` file from `data_old` to the new `data` folder.
+
+6. **Start MySQL:**
+   - Open XAMPP Control Panel.
+   - Start the MySQL service and verify that it runs successfully.
+
+---
+
+## Additional Notes
+
+- If MySQL still fails to start, check the `mysql_error.log` file located in the `xampp/mysql/data` folder for more details.
+- Ensure that no other application is using port **3306**. If there is a conflict, change the MySQL port in `my.ini` configuration file.
 
 2. **Page Not Loading or 404 Error**:
    - Verify that the application started successfully without errors. Check the terminal logs for any exceptions.

@@ -47,15 +47,20 @@ CREATE TABLE `sales` (
   `price` DECIMAL(10,2) NOT NULL,
   `store_type` ENUM('Online', 'In-store') NOT NULL,
   `sales_person_id` INT(11) DEFAULT NULL,
-  PRIMARY KEY (`sale_id`)
+  PRIMARY KEY (`sale_id`),
+  FOREIGN KEY (`product_id`) REFERENCES `stock`(`product_id`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`discount_id`) REFERENCES `discounts`(`discount_id`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`sales_person_id`) REFERENCES `sales_persons`(`sales_person_id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Creating the accumulated_sale table
 CREATE TABLE `accumulated_sale` (
-  `product_id` INT(11) NOT NULL,
+  `product_id` INT(11) NOT NULL PRIMARY KEY,
   `total_quantity_sold` INT(11) NOT NULL DEFAULT 0,
   `total_profit` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
-  PRIMARY KEY (`product_id`),
   FOREIGN KEY (`product_id`) REFERENCES `stock`(`product_id`)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -128,11 +133,18 @@ AFTER INSERT ON `sales`
 FOR EACH ROW
 BEGIN
   -- Insert or update the accumulated_sale table
-  INSERT INTO `accumulated_sale` (`product_id`, `total_quantity_sold`, `total_profit`)
-  VALUES (NEW.product_id, 1, NEW.price)
-  ON DUPLICATE KEY UPDATE
-    `total_quantity_sold` = `total_quantity_sold` + 1,  -- Increment quantity sold
-    `total_profit` = `total_profit` + NEW.price;  -- Add the sale price to total profit
+  IF EXISTS (SELECT 1 FROM `accumulated_sale` WHERE `product_id` = NEW.product_id) THEN
+    -- Update existing entry
+    UPDATE `accumulated_sale`
+    SET
+      `total_quantity_sold` = `total_quantity_sold` + 1,  -- Increment quantity sold
+      `total_profit` = `total_profit` + NEW.price         -- Add the sale price to total profit
+    WHERE `product_id` = NEW.product_id;
+  ELSE
+    -- Insert new entry
+    INSERT INTO `accumulated_sale` (`product_id`, `total_quantity_sold`, `total_profit`)
+    VALUES (NEW.product_id, 1, NEW.price);
+  END IF;
 END //
 DELIMITER ; -- Reset the delimiter back to the default
 
