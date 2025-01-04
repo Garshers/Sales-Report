@@ -4,27 +4,28 @@ import java.math.BigDecimal;
 
 public class SalePersonWithSaleDTO {
 
-    // Variables from 'sales_persons'
-    private Long salesPersonId;
-    private String salesPersonNameSurname;
-
     // Variables from 'sales'
-    private Long saleId;
-    private Long productId;
-    private BigDecimal price;
+    private Long saleId; 
+    private Long productId;  
+    private BigDecimal price; 
 
     // Variables from 'stock'
     private String productTypeName;
 
+    // Variables from 'sales_persons'
+    private Long salesPersonId;
+    private String salesPersonNameSurname;
+
     // Constructor
-    public SalePersonWithSaleDTO(Long saleId, Long salesPersonId, String salesPersonNameSurname,
-                                Long productId, BigDecimal price, String productTypeName) {
+    public SalePersonWithSaleDTO(Long saleId, Long productId, BigDecimal price,
+                                String productTypeName,
+                                Long salesPersonId, String salesPersonNameSurname) {
         this.saleId = saleId;
-        this.salesPersonId = salesPersonId;
-        this.salesPersonNameSurname = salesPersonNameSurname;
         this.productId = productId;
         this.price = price;
         this.productTypeName = productTypeName;
+        this.salesPersonId = salesPersonId;
+        this.salesPersonNameSurname = salesPersonNameSurname;
     }
 
     public Long getSaleId() {
@@ -78,12 +79,12 @@ public class SalePersonWithSaleDTO {
     @Override
     public String toString() {
         return "SalePersonWithSaleDTO{" +
-            "saleId=" + saleId +
-            ", salesPersonId=" + salesPersonId +
-            ", salesPersonNameSurname='" + salesPersonNameSurname + '\'' +
-            ", productId=" + productId +
-            ", price=" + price +
-            ", productTypeName='" + productTypeName + '\'' +
-            '}';
+               "saleId=" + saleId +
+               ", productId=" + productId +
+               ", price=" + price +
+               ", productTypeName='" + productTypeName + '\'' +
+               ", salesPersonId=" + salesPersonId +
+               ", salesPersonNameSurname='" + salesPersonNameSurname + '\'' +
+               '}';
     }
 }

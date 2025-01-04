@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.salesreport.salesreport.dto.SalePersonWithSaleDTO;
 import com.salesreport.salesreport.dto.SaleStockDTO;
 import com.salesreport.salesreport.model.AccumulatedSale;
 import com.salesreport.salesreport.model.Sale;
@@ -48,11 +48,15 @@ public class SaleController {
     // When a GET request is made to the "/sales" URL, this method will be invoked.
     @GetMapping("/sales")
     public String getSalesReport(Model model) {
-        // Fetch sales data and stock data
+        model.addAttribute("saleStockList", fetchSaleStockData());
+        model.addAttribute("salesPersonProfits", calculateSalesPersonProfits());
+        model.addAttribute("saleList", mapSalesToDetails());
+        return "sales";
+    }
+
+    private List<SaleStockDTO> fetchSaleStockData() {
         List<AccumulatedSale> accumulatedSales = accumulatedSaleService.getAllSales();
         List<Stock> stock = stockService.getAllStocks();
-
-        // List to hold combined data
         List<SaleStockDTO> saleStockList = new ArrayList<>();
 
         // Combine data from Sale and Stock based on productId
@@ -74,39 +78,33 @@ public class SaleController {
                 saleStockList.add(saleStockDTO);
             }
         }
-        
-        // Add the combined data to the model
-        model.addAttribute("saleStockList", saleStockList);
+        return saleStockList;
+    }
 
-        //------------------------------------------------------------
-        
+    private HashMap<String, BigDecimal> calculateSalesPersonProfits() {
+        List<SalesPerson> salesPersons = salesPersonService.getAllSalesPersons();
         List<Sale> sales = saleService.getAllSales();
+    
+        return salesPersons.stream()
+            .collect(Collectors.toMap(
+                sp -> sp.getName() + " " + sp.getSurname(),    // Key: Full name as String
+                sp -> sales.stream()
+                    .filter(sale -> sale.getSalesPersonId() != null 
+                                    && sale.getSalesPersonId().equals(sp.getSalesPersonId()) 
+                                    && sale.getPrice() != null)
+                    .map(Sale::getPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add), // Value: Total profit as BigDecimal
+                    (existing, replacement) -> existing,       // Merge function for duplicate keys
+                    HashMap<String, BigDecimal>::new
+            ));
+    }
+    private List<HashMap<String, Object>> mapSalesToDetails() {
+        List<Sale> sales = saleService.getAllSales();
+        List<Stock> stock = stockService.getAllStocks();
         List<SalesPerson> salesPersons = salesPersonService.getAllSalesPersons();
 
-        // HashMap to store total profit for each salesperson
-        HashMap<String, BigDecimal> salesPersonProfits = new HashMap<>();
-
-        for (SalesPerson salesPerson : salesPersons) {
-            BigDecimal totalProfit = BigDecimal.ZERO;
-            
-            // Iterate over each sale and match it with the current salesperson
-            for (Sale sale : sales) {
-                if (sale.getSalesPersonId() != null && sale.getSalesPersonId().equals(salesPerson.getSalesPersonId())) {
-                    System.out.println("Sale for " + salesPerson.getName() + ": " + sale.getPrice()); // Debug log
-                    if (sale.getPrice() != null) {
-                        totalProfit = totalProfit.add(sale.getPrice());
-                    }
-                }
-            }
-            salesPersonProfits.put(salesPerson.getName() + " " + salesPerson.getSurname(), totalProfit);
-        }
-
-        // Add the combined data to the model
-        model.addAttribute("salesPersonProfits", salesPersonProfits);
-
-        //------------------------------------------------------------
-
-        List<SalePersonWithSaleDTO> salePersonsWithSaleDTOList = new ArrayList<>();
+        // List<SalePersonWithSaleDTO> salePersonsWithSaleDTOList = new ArrayList<>();
+        List<HashMap<String, Object>> saleList = new ArrayList<>();
 
         for (Sale sale : sales) {
             // Find the corresponding salesperson based on salesPersonId
@@ -121,30 +119,42 @@ public class SaleController {
                     .findFirst()
                     .orElse(null);
 
-            if (correspondingSalesPerson != null && correspondingStock != null) {
+            // if (correspondingSalesPerson != null && correspondingStock != null) {
+                Long saleId = sale.getSaleId(); 
+                Long productId = sale.getProductId();  
+                BigDecimal price = sale.getPrice(); 
+                String productTypeName = correspondingStock.getProductType() + " " + correspondingStock.getProductName();
+                Long salesPersonId = (correspondingSalesPerson != null) ? correspondingSalesPerson.getSalesPersonId() : -1L;
+                String salesPersonNameSurname = (correspondingSalesPerson != null) ? 
+                    correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname() : "N/A";
+
+                HashMap<String, Object> saleDetails = new HashMap<>();
+                saleDetails.put("saleId", saleId);
+                saleDetails.put("productId", productId);
+                saleDetails.put("price", price);
+                saleDetails.put("productTypeName", productTypeName);
+                saleDetails.put("salesPersonId", salesPersonId);
+                saleDetails.put("salesPersonNameSurname", salesPersonNameSurname);
+                saleList.add(saleDetails);
+                
+                /* 
                 SalePersonWithSaleDTO salePersonWithSaleDTO = new SalePersonWithSaleDTO(
-                        sale.getSaleId(),
-                        correspondingSalesPerson.getSalesPersonId(),
-                        correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname(),
-                        sale.getProductId(),
-                        sale.getPrice(),
-                        correspondingStock.getProductType() + " " + correspondingStock.getProductName()
+                        saleId, productId, price,
+                        productTypeName,
+                        salesPersonId, salesPersonNameSurname 
                 );
+
+                System.out.println("Check: " + salePersonWithSaleDTO);
                 salePersonsWithSaleDTOList.add(salePersonWithSaleDTO);
-            }
+                */
+            //}
         }
-        
-        //System.out.println("SalePersonsWithSaleDTOList: " + salePersonsWithSaleDTOList);
-        //model.addAttribute("salePersonsWithSaleDTOList", salePersonsWithSaleDTOList);
-        model.addAttribute("salePersonsWithSaleDTOList", salePersonsWithSaleDTOList);
-
-        List<SalePersonWithSaleDTO> salePersonsWithSaleDTOListFromModel = 
-            (List<SalePersonWithSaleDTO>) model.asMap().get("salePersonsWithSaleDTOList");
-
-        System.out.println("SalePersonsWithSaleDTOList: " + salePersonsWithSaleDTOListFromModel);
-
-        // Return the view name that will display the combined data
-        return "sales";  // The "sales" view will display the combined data
+        return saleList;
+        // -------------------------------ERROR---------------------------------------------------
+        // Error encountered during the transfer of "salePersonsWithSaleDTOList". 
+        // It is not being read correctly, and the root cause of the issue could not be identified.
+        // System.out.println("SalePersonsWithSaleDTOList: " + salePersonsWithSaleDTOList);
+        // model.addAttribute("salePersonsWithSaleDTOList", salePersonsWithSaleDTOList);
     }
 
     @GetMapping("/charts")

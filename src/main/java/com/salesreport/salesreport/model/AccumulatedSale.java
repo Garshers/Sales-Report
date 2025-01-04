@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -23,12 +21,6 @@ public class AccumulatedSale {
     // The @Id annotation designates this field as the primary key for the entity.
     // This primary key uniquely identifies each record in the "accumulated_sale" table.
     @Id
-
-    // The @GeneratedValue annotation defines how the primary key should be generated.
-    // In this case, GenerationType.IDENTITY is used, meaning the database 
-    // will automatically generate the value for the primary key.
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "product_id")
     private Long productId;
 

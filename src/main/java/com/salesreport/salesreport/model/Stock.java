@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "product_id")
     Long productId;
 

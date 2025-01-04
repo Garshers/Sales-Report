@@ -26,10 +26,6 @@ public class SalesPerson {
         return salesPersonId;
     }
 
-    public void setSalesPersonId(Long salesPersonId) {
-        this.salesPersonId = salesPersonId;
-    }
-
     public String getName() {
         return salesPersonName;
     }

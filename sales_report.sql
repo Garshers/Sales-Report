@@ -26,16 +26,16 @@ CREATE TABLE `stock` (
 CREATE TABLE `discounts` (
   `discount_id` INT(11) NOT NULL AUTO_INCREMENT,
   `discount_code` VARCHAR(255) NOT NULL,
-  `discount_percentage` DECIMAL(5,2) DEFAULT NULL, -- Discount in percentage
-  `discount_usd` DECIMAL(10,2) DEFAULT NULL, -- Discount in USD
+  `discount_percentage` DECIMAL(5,2) DEFAULT NULL,
+  `discount_usd` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`discount_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Creating the discounts table
+-- Creating the sales_persons table
 CREATE TABLE `sales_persons` (
   `sales_person_id` INT(11) NOT NULL AUTO_INCREMENT,
   `sales_person_name` VARCHAR(255) NOT NULL,
-  `sales_person_surname` VARCHAR(255) DEFAULT NULL, -- Discount in percentage
+  `sales_person_surname` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`sales_person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -43,17 +43,11 @@ CREATE TABLE `sales_persons` (
 CREATE TABLE `sales` (
   `sale_id` INT(11) NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) NOT NULL,
-  `discount_id` INT(11) DEFAULT NULL, -- Linked to the discounts table
-  `price` DECIMAL(10,2) NOT NULL, -- Sale price after discount
+  `discount_id` INT(11) DEFAULT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
   `store_type` ENUM('Online', 'In-store') NOT NULL,
   `sales_person_id` INT(11) DEFAULT NULL,
-  PRIMARY KEY (`sale_id`),
-  FOREIGN KEY (`product_id`) REFERENCES `stock`(`product_id`)
-    ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (`discount_id`) REFERENCES `discounts`(`discount_id`)
-    ON DELETE SET NULL ON UPDATE CASCADE,
-  FOREIGN KEY (`sales_person_id`) REFERENCES `sales_persons`(`sales_person_id`)
-    ON DELETE SET NULL ON UPDATE CASCADE
+  PRIMARY KEY (`sale_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Creating the accumulated_sale table

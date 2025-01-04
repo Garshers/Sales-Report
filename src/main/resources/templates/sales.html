@@ -51,6 +51,7 @@
         <thead>
             <tr>
                 <th>Sale ID</th>
+                <th>Product ID</th>
                 <th>Product</th>
                 <th>Price</th>
                 <th>Sales Person ID</th>
@@ -58,15 +59,36 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="s : ${salePersonsWithSaleDTOList}">
-                <td colspan="5">No data available</td><!--
-                <td th:text="${s.saleId}"></td>
-                <td th:text="${s.productTypeName}"></td>
-                <td th:text="${s.price}"></td>
-                <td th:text="${s.salesPersonId}"></td>
-                <td th:text="${s.salesPersonNameSurname}"></td>-->
+            <!-- Iteracja przez listę -->
+            <tr th:each="sale : ${saleList}">
+                <td th:text="${sale['saleId']}"></td>
+                <td th:text="${sale['productId']}"></td>
+                <td th:text="${sale['productTypeName']}"></td>
+                <td th:text="${sale['price']}"></td>
+                <td th:text="${sale['salesPersonId']}"></td>
+                <td th:text="${sale['salesPersonNameSurname']}"></td>
             </tr>
         </tbody>
+        <!--<thead>
+            <tr>
+                <th>Sale ID</th>
+                <th>Product ID</th>
+                <th>Price</th>
+                <th>Product Type</th>
+                <th>Sales Person ID</th>
+                <th>Sales Person Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="salePerson : ${salePersonsWithSaleDTOList}">
+                <td th:text="${salePerson.saleId}"></td>
+                <td th:text="${salePerson.productId}"></td>
+                <td th:text="${salePerson.price}"></td>
+                <td th:text="${salePerson.productTypeName}"></td>
+                <td th:text="${salePerson.salesPersonId}"></td>
+                <td th:text="${salePerson.salesPersonNameSurname}"></td>
+            </tr>
+        </tbody>-->
     </table>
     
     <!-- Link to navigate to the charts page -->

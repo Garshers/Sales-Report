@@ -37,10 +37,6 @@ public class Sale {
         return saleId;
     }
 
-    public void setSaleId(Long saleId) {
-        this.saleId = saleId;
-    }
-
     public Long getProductId() {
         return productId;
     }
