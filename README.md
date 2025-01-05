@@ -44,7 +44,6 @@ Before you can run the application, ensure you have the following installed:
 ![Sales Report Charts](src/main/resources/static/images/README/sales-report-charts.gif)
 
 ## Technologies Used
-
 This project is built using the following technologies:
 
 - **Spring Boot**: A Java-based framework that simplifies the development of production-ready applications. It provides embedded servers, configuration management, and easy integration with databases and other services.
