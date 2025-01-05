@@ -65,7 +65,7 @@
                 <td th:text="${sale['productId']}"></td>
                 <td th:text="${sale['productTypeName']}"></td>
                 <td th:text="${sale['price']}"></td>
-                <td th:text="${sale['salesPersonId']}"></td>
+                <td th:text="${sale['salesPersonId'] != -1 ? sale['salesPersonId'] : ''}"></td>
                 <td th:text="${sale['salesPersonNameSurname']}"></td>
             </tr>
         </tbody>

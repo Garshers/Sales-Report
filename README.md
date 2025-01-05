@@ -60,7 +60,6 @@ This project is built using the following technologies:
    - Ensure that the database (`sales_report`) and the table (`sales`) exist.
    - *"MySQL shutdown unexpectedly"* Error in XAMPP
 
-## Error Description
 You may encounter the following error in XAMPP Control Panel:
    ```bash
    [mysql] Error: MySQL shutdown unexpectedly.
@@ -72,11 +71,7 @@ You may encounter the following error in XAMPP Control Panel:
    [mysql] entire log window on the forums.
    ```
 
-**Important:** Do not delete the `ibdata1` file as it contains critical data for your databases.
-
----
-
-## Step-by-Step Fix
+***Important:*** Do not delete the `ibdata1` file as it contains critical data for your databases.
 
 1. **Stop MySQL Service:**
    - Open XAMPP Control Panel.
@@ -101,9 +96,8 @@ You may encounter the following error in XAMPP Control Panel:
    - Open XAMPP Control Panel.
    - Start the MySQL service and verify that it runs successfully.
 
----
 
-## Additional Notes
+### Additional Notes
 
 - If MySQL still fails to start, check the `mysql_error.log` file located in the `xampp/mysql/data` folder for more details.
 - Ensure that no other application is using port **3306**. If there is a conflict, change the MySQL port in `my.ini` configuration file.

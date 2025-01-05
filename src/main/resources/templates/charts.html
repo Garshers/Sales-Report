@@ -10,129 +10,144 @@
 
     <h1>Sales Charts</h1>
 
-    <div>
-        <button id="filterBySmallestSum" onclick="filterBySmallestSum()">Filter by Smallest Sum</button>
-        <button id="filterByLargestSum" onclick="filterByLargestSum()">Filter by Largest Sum</button>
+    <!-- Accumulated Sales Chart -->
+    <div class="chart-container">
+        <div class="button-container">
+            <button onclick="sortChartData('accumulatedSalesChart', 'asc')">Sort by Smallest</button>
+            <button onclick="sortChartData('accumulatedSalesChart', 'desc')">Sort by Largest</button>
+        </div>
+        <canvas id="accumulatedSalesChart"></canvas>
     </div>
 
+    <!-- Sales Person Chart -->
     <div class="chart-container">
-        <canvas id="salesChart"></canvas>
+        <div class="button-container">
+            <button onclick="sortChartData('salesPersonChart', 'asc')">Sort by Smallest</button>
+            <button onclick="sortChartData('salesPersonChart', 'desc')">Sort by Largest</button>
+        </div>
+        <canvas id="salesPersonChart"></canvas>
     </div>
 
     <a href="/sales">Go to sales page</a>
-</body>
-</html>
 
-<script th:inline="javascript">
-    // Get the data passed from the controller (using Thymeleaf variables)
-    var labels = /*[[${chartData.labels}]]*/ [];
-    var dataValues = /*[[${chartData.values}]]*/ [];
+    <script th:inline="javascript">
+        // Object to store all charts for easy management
+        const charts = {};
+    
+        // Universal function to create a chart
+        function createChart(chartId, labels, dataValues, labelText, type, options = {}) {
+            const ctx = document.getElementById(chartId).getContext('2d');
 
-    // Create a global reference to the chart to update it dynamically
-    var chart = null;
+            // If the chart already exists, destroy it to avoid errors
+            if (charts[chartId]) {
+                charts[chartId].destroy();
+            }
 
-    // Function to create the chart with dynamic data
-    function createChart(labels, dataValues) {
-        var ctx = document.getElementById('salesChart').getContext('2d');
-        
-        // If the chart already exists, destroy it to avoid multiple charts on the page
-        if (chart) {
-            chart.destroy();
-        }
-
-        chart = new Chart(ctx, {
-            type: 'bar',  // Type of chart (e.g., bar, line, pie)
-            data: {
-                labels: labels,  // Labels for the x-axis (product names)
-                datasets: [{
-                    label: 'Total Profit',
-                    data: dataValues,  // Sales data (total profit per product)
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
+            // Default chart options
+            const defaultOptions = {
                 responsive: true,
-                maintainAspectRatio: false, 
-                scales: {
-                    y: {
-                        beginAtZero: true, 
-                        ticks: {
-                            callback: function(value) {
-                                return value + ' USD'; 
-                            }
-                        }
-                    }
-                },
+                maintainAspectRatio: false,
                 plugins: {
                     tooltip: {
-                        enabled: true,
                         callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.raw + ' USD';
+                            label: function (tooltipItem) {
+                                return tooltipItem.raw + ' USD'; // Format tooltips to show values
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
                             }
                         }
                     }
                 }
+            };
+
+            // Set colors depending on chart type
+            let backgroundColor, borderColor;
+
+            if (type === 'pie') {
+                backgroundColor = [
+                    'rgba(135, 206, 235, 0.2)',
+                    'rgba(144, 238, 144, 0.2)',
+                    'rgba(255, 228, 196, 0.2)',
+                    'rgba(211, 211, 211, 0.2)',
+                    'rgba(255, 239, 189, 0.2)' 
+                ];
+                borderColor = 'rgba(75, 192, 192, 1)';
+            } else if (type === 'bar') {
+                backgroundColor = 'rgba(75, 192, 192, 0.2)';
+                borderColor = 'rgba(75, 192, 192, 1)';
             }
-        });
-    }
 
-    // Initially create the chart with the provided data
-    createChart(labels, dataValues);
+            // Merge default options with the provided options
+            options = Object.assign({}, defaultOptions, options);
 
-    // Filter by smallest sum (sort the data by the smallest total profit)
-    function filterBySmallestSum() {
-        // Combine labels and data into an array of objects
-        var sortedData = labels.map(function(label, index) {
-            return {
+            // Create and save the new chart in the `charts` object
+            charts[chartId] = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: labelText,
+                        data: dataValues,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: options
+            });
+
+            return charts[chartId];
+        }
+    
+        // Universal function to sort chart data
+        function sortChartData(chartId, sortType) {
+            // Get the chart by `chartId`
+            const chart = charts[chartId];
+            if (!chart) return;
+    
+            // Copy chart data
+            const labels = chart.data.labels.slice();
+            const dataValues = chart.data.datasets[0].data.slice();
+    
+            // Sort data based on `sortType`
+            const sortedData = labels.map((label, index) => ({
                 label: label,
                 data: dataValues[index]
-            };
+            }));
+    
+            if (sortType === 'asc') {
+                sortedData.sort((a, b) => a.data - b.data);
+            } else if (sortType === 'desc') {
+                sortedData.sort((a, b) => b.data - a.data);
+            }
+    
+            // Update chart data
+            chart.data.labels = sortedData.map(item => item.label);
+            chart.data.datasets[0].data = sortedData.map(item => item.data);
+    
+            // Refresh the chart
+            chart.update();
+        }
+    
+        // Initialize charts when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Data for charts
+            const salesLabels = /*[[${chartData.labels}]]*/ [];
+            const salesDataValues = /*[[${chartData.values}]]*/ [];
+    
+            const salesPersonLabels = /*[[${salesPersonProfits.keySet()}]]*/ [];
+            const salesPersonDataValues = /*[[${salesPersonProfits.values()}]]*/ [];
+    
+            // Initialize charts
+            createChart('accumulatedSalesChart', salesLabels, salesDataValues, 'Total Sales', 'bar');
+            createChart('salesPersonChart', salesPersonLabels, salesPersonDataValues, 'Total Profits', 'pie');
         });
-
-        // Sort the array by the 'data' values in ascending order (smallest sum first)
-        sortedData.sort(function(a, b) {
-            return a.data - b.data;  // Sort by data (total profit)
-        });
-
-        // Extract the sorted labels and data for the chart
-        var finalLabels = sortedData.map(function(item) {
-            return item.label;
-        });
-        var finalData = sortedData.map(function(item) {
-            return item.data;
-        });
-
-        // Re-create the chart with the sorted data (smallest sum first)
-        createChart(finalLabels, finalData);
-    }
-
-    // Filter by largest sum (sort the data by the largest total profit)
-    function filterByLargestSum() {
-        // Combine labels and data into an array of objects
-        var sortedData = labels.map(function(label, index) {
-            return {
-                label: label,
-                data: dataValues[index]
-            };
-        });
-
-        // Sort the array by the 'data' values in descending order (largest sum first)
-        sortedData.sort(function(a, b) {
-            return b.data - a.data;  // Sort by data (total profit)
-        });
-
-        // Extract the sorted labels and data for the chart
-        var finalLabels = sortedData.map(function(item) {
-            return item.label;
-        });
-        var finalData = sortedData.map(function(item) {
-            return item.data;
-        });
-
-        // Re-create the chart with the sorted data (largest sum first)
-        createChart(finalLabels, finalData);
-    }
-</script>
+    </script>
+</body>
+</html>

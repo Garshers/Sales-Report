@@ -126,7 +126,7 @@ public class SaleController {
                 String productTypeName = correspondingStock.getProductType() + " " + correspondingStock.getProductName();
                 Long salesPersonId = (correspondingSalesPerson != null) ? correspondingSalesPerson.getSalesPersonId() : -1L;
                 String salesPersonNameSurname = (correspondingSalesPerson != null) ? 
-                    correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname() : "N/A";
+                    correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname() : "";
 
                 HashMap<String, Object> saleDetails = new HashMap<>();
                 saleDetails.put("saleId", saleId);
@@ -186,7 +186,8 @@ public class SaleController {
 
         // Adding chart data to the model
         model.addAttribute("chartData", chartData);
-
+        model.addAttribute("salesPersonProfits", calculateSalesPersonProfits());
+        
         // Returning the view name "charts" for rendering the chart page
         return "charts";  // The "charts" view will display the sales charts.
     }

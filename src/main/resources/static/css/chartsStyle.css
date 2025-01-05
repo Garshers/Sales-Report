@@ -12,6 +12,7 @@ body, h1, a {
 
 /* Center the content */
 body {
+    padding-top: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,18 +28,32 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Styling the chart container */
 .chart-container {
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%; /* Dostosowuje szerokość do 100% kontenera nadrzędnego */
-    max-width: 800px; /* Maksymalna szerokość kontenera */
+    padding: 1%;
+
+    width: 90%;
+    max-width: 800px;
     min-height: 400px;
-    max-height: 600px;
-    height: auto; /* Wysokość zależna od zawartości */
-    margin: 0 auto 20px auto; /* Wyśrodkowanie kontenera */
+    height: fit-content;
+
+    margin: 0 auto 20px auto;
+}
+
+.button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style for the canvas plane */
+canvas{
+    max-height: 90%;
 }
 
 /* Style for the "Go to sales page" link */
@@ -78,7 +93,7 @@ button:hover {
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
     .chart-container {
-        width: 90%; /* Zwiększa szerokość kontenera na mniejszych ekranach */
-        padding: 15px; /* Zmniejsza padding na mniejszych ekranach */
+        width: 90%;
+        padding: 15px;
     }
 }
