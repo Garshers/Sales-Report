@@ -40,8 +40,8 @@ Before you can run the application, ensure you have the following installed:
 - **Java Script**: Enables creation of sorting algoritms as well as creating tables and charts.
 
 ## Examples
-![Sales Report Tables](./src/main/resources/static/images/README/sales-report-tables.gif)
-![Sales Report Charts](./src/main/resources/static/images/README/sales-report-charts.gif)
+![Sales Report Tables](src/main/resources/static/images/README/sales-report-tables.gif)
+![Sales Report Charts](src/main/resources/static/images/README/sales-report-charts.gif)
 
 ## Technologies Used
 
