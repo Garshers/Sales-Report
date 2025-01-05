@@ -31,12 +31,17 @@ Before you can run the application, ensure you have the following installed:
 
 ## Features
 
-- **View Sales Report**: Displays the sales data in a table format, showing product name, quantity, and price.
-- **Interactive Sales Chart**: A chart that displays total profit per product. The chart is interactive, allowing the user to filter the data by the smallest or largest sum of total profit. This helps to visualize the data dynamically.
+- **View Sales Report**: Displays the sales data in a table format. Tables are interactive (on hoover), and allowing the user to sort every column.
+- **Interactive Sales Chart**: Charts that display total profit per product, and total profit per employee. Charts are interactive, allowing the user to filter the data by the smallest or largest sum of total profit.
 - **Dynamic Data Rendering**: The sales data is fetched from a MySQL database and displayed dynamically using Thymeleaf templates.
 - **Spring Data JPA Integration**: The application interacts with a MySQL database via Spring Data JPA to fetch the sales data.
 - **Simple Backend and Frontend Integration**: The Spring Boot controller handles business logic, and Thymeleaf renders the HTML view with the fetched data.
 - **CSS Styling**: The report page is styled with a custom CSS file (`style.css`) to ensure it is visually appealing.
+- **Java Script**: Enables creation of sorting algoritms as well as creating tables and charts.
+
+## Examples
+![Sales Report Tables](./src/main/resources/static/images/README/sales-report-tables.gif)
+![Sales Report Charts](./src/main/resources/static/images/README/sales-report-charts.gif)
 
 ## Technologies Used
 
