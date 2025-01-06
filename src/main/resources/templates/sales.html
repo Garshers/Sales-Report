@@ -8,13 +8,16 @@
     <h1>Sales Report</h1>
     
     <!-- Table displaying sales data -->
+    <h2>Accumulated Sales Report</h2>
+    <button onclick="exportTableToExcel('saleStockTable', 'AccumulatedSalesReport.xlsx')" class="exportBtn">
+        Export Accumulated Sales Report</button>
     <table id="saleStockTable">
         <thead>
             <tr>
-                <th>Product ID <button id="sortBtn0" class="sortBtn" onclick="sortTable('saleStockTable', 0)">Sort</button></th>
-                <th>Product Name<button id="sortBtn1" class="sortBtn" onclick="sortTable('saleStockTable', 1)">Sort</button></th>
-                <th>Quantity Sold <button id="sortBtn2" class="sortBtn" onclick="sortTable('saleStockTable', 2)">Sort</button></th>
-                <th>Total Profit <button id="sortBtn3" class="sortBtn" onclick="sortTable('saleStockTable', 3)">Sort</button></th>
+                <th><button id="sortBtn0" class="sortBtn" onclick="sortTable('saleStockTable', 0)">Product ID</button></th>
+                <th><button id="sortBtn1" class="sortBtn" onclick="sortTable('saleStockTable', 1)">Product Name</button></th>
+                <th><button id="sortBtn2" class="sortBtn" onclick="sortTable('saleStockTable', 2)">Quantity Sold</button></th>
+                <th><button id="sortBtn3" class="sortBtn" onclick="sortTable('saleStockTable', 3)">Total Profit</button></th>
             </tr>
         </thead>
         <tbody>
@@ -30,11 +33,13 @@
 
     <!-- Section displaying sales person and their sales -->
     <h2>Employee sales</h2>
+    <button onclick="exportTableToExcel('salesPersonsTable', 'EmployeeSales.xlsx')" class="exportBtn">
+        Export Employee Sales</button>
     <table id="salesPersonsTable">
         <thead>
             <tr>
-                <th>Sales Person<button id="sortBtn0" class="sortBtn" onclick="sortTable('salesPersonsTable', 0)">Sort</button></th>
-                <th>Total Profit<button id="sortBtn1" class="sortBtn" onclick="sortTable('salesPersonsTable', 1)">Sort</button></th>
+                <th><button id="sortBtn0" class="sortBtn" onclick="sortTable('salesPersonsTable', 0)">Sales Person</button></th>
+                <th><button id="sortBtn1" class="sortBtn" onclick="sortTable('salesPersonsTable', 1)">Total Profit</button></th>
             </tr>
         </thead>
         <tbody>
@@ -48,15 +53,17 @@
 
     <!-- Section displaying every single individual sale -->
     <h2>Individual Sales</h2>
+    <button onclick="exportTableToExcel('salesTable', 'Individual Sales.xlsx')" class="exportBtn">
+        Export Individual Sales</button>
     <table id="salesTable">
         <thead>
             <tr>
-                <th>Sale ID<button id="sortBtn0" class="sortBtn" onclick="sortTable('salesTable', 0)">Sort</button></th>
-                <th>Product ID<button id="sortBtn1" class="sortBtn" onclick="sortTable('salesTable', 1)">Sort</button></th>
-                <th>Product<button id="sortBtn2" class="sortBtn" onclick="sortTable('salesTable', 2)">Sort</button></th>
-                <th>Price<button id="sortBtn3" class="sortBtn" onclick="sortTable('salesTable', 3)">Sort</button></th>
-                <th>Sales Person ID<button id="sortBtn4" class="sortBtn" onclick="sortTable('salesTable', 4)">Sort</button></th>
-                <th>Sales Person<button id="sortBtn5" class="sortBtn" onclick="sortTable('salesTable', 5)">Sort</button></th>
+                <th><button id="sortBtn0" class="sortBtn" onclick="sortTable('salesTable', 0)">Sale ID</button></th>
+                <th><button id="sortBtn1" class="sortBtn" onclick="sortTable('salesTable', 1)">Product ID</button></th>
+                <th><button id="sortBtn2" class="sortBtn" onclick="sortTable('salesTable', 2)">Product</button></th>
+                <th><button id="sortBtn3" class="sortBtn" onclick="sortTable('salesTable', 3)">Price</button></th>
+                <th><button id="sortBtn4" class="sortBtn" onclick="sortTable('salesTable', 4)">Sales Person ID</button></th>
+                <th><button id="sortBtn5" class="sortBtn" onclick="sortTable('salesTable', 5)">Sales Person</button></th>
             </tr>
         </thead>
         <tbody>
@@ -141,4 +148,26 @@
         document.getElementById("sortBtn" + n).classList.toggle("ascending", !ascending);
         document.getElementById("sortBtn" + n).classList.toggle("descending", ascending);
     }
-</script>   
+</script>  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    function exportTableToExcel(tableId, filename) {
+    // Get the table by ID
+    const table = document.getElementById(tableId);
+    if (!table) {
+        console.error(`Table with ID '${tableId}' does not exist.`);
+        return;
+    }
+
+    // Convert the HTML table to an Excel worksheet
+    const worksheet = XLSX.utils.table_to_sheet(table);
+
+    // Create a new Excel workbook
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Save the Excel file
+    XLSX.writeFile(workbook, filename);
+}
+</script>

@@ -12,7 +12,7 @@ body, h1, a {
 
 /* Center the content */
 body {
-    padding: 200px 0px 200px;
+    padding: 450px 0px 450px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,6 +31,9 @@ h1 {
 .chart-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -42,6 +45,7 @@ h1 {
     height: fit-content;
 
     margin: 0 auto 20px auto;
+    border: 1px solid red;
 }
 
 .button-container{
@@ -49,11 +53,14 @@ h1 {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    border: 1px solid red;
 }
 
 /* Style for the canvas plane */
 canvas{
-    max-height: 90%;
+    display: flex;
+    height: 400px;
+    border: 1px solid red;
 }
 
 /* Style for the "Go to sales page" link */
@@ -95,5 +102,13 @@ button:hover {
     .chart-container {
         width: 90%;
         padding: 15px;
+    }
+}
+
+
+@media (max-width: 1000px) {
+    canvas{
+        width: fit-content;
+        max-width: 90%;
     }
 }

@@ -38,7 +38,6 @@ table {
 
 /* Header cell styling */
 th {
-    padding: 10px;
     background-color: #4CAF50;
     color: white;
     text-align: left;
@@ -63,7 +62,7 @@ tbody tr:hover {
     background-color: #e2f7e2;
 }
 
-/* Style for the "Go to sales page" link */
+/* Style for the "Go to chart page" link */
 a {
     width: fit-content;
     font-size: 1.2em;
@@ -86,16 +85,36 @@ a:hover {
     background-color: #4CAF50;
     color: white;
     border: none;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 10px;
+    width: 100%;
+    /*margin-left: 10px;
     padding: 5px 10px;
+    border: 1px solid darkgreen;*/
+}
+
+/* Hover effect for sort button */
+.sortBtn:hover {
+    background-color: #45a049;
+}
+
+/* Style for the export button */
+.exportBtn{
+    background-color: #4CAF50;
+    color: white;
+    border: none;
     font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-left: 10px;
-    border: 1px solid darkgreen;
+    padding: 5px 10px;
 }
 
-/* Hover effect for sort button */
-.sortBtn:hover {
+/* Hover effect for export button */
+.exportBtn:hover {
     background-color: #45a049;
 }
