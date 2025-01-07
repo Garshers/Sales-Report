@@ -41,7 +41,7 @@ h1 {
 
     width: 90%;
     max-width: 800px;
-    min-height: 400px;
+    min-height: 450px;
     height: fit-content;
 
     margin: 0 auto 20px auto;
@@ -59,7 +59,8 @@ h1 {
 /* Style for the canvas plane */
 canvas{
     display: flex;
-    height: 400px;
+    max-height: 400px;
+    min-width: 400px;
     border: 1px solid red;
 }
 
