@@ -186,18 +186,10 @@ public class SaleController {
 
         // Adding chart data to the model
         model.addAttribute("chartData", chartData);
+        System.out.println(calculateSalesPersonProfits());
         model.addAttribute("salesPersonProfits", calculateSalesPersonProfits());
-        model.addAttribute("gaugeData", getGaugeData());
-        System.out.println(getGaugeData());
+        
         // Returning the view name "charts" for rendering the chart page
         return "charts";  // The "charts" view will display the sales charts.
-    }
-
-    public HashMap<String, Object> getGaugeData() {
-        HashMap<String, Object> response = new HashMap<>();
-        response.put("value", 315); // Current value
-        response.put("max", 400);  // Maximum value
-        response.put("steps", new int[]{160, 320, 400}); // Thresholds for colors
-        return response;
     }
 }

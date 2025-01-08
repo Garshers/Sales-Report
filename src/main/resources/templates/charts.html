@@ -29,6 +29,8 @@
     </div>
 
     <!-- [...] Chart -->
+    <p th:text="${salesPersonProfits}">Sales data not available</p>
+
     <div class="chart-container">
         <canvas id="gaugeChart" style="max-width: 400px;"></canvas>
     </div>
@@ -163,14 +165,47 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel"></script>
-<script>
-function createGaugeChart(gaugeData) {
+<script th:inline="javascript">
+function createGaugeChart() {
 
-// Check if the data is valid
-const value = gaugeData.value;
-const max = gaugeData.max;
-const steps = gaugeData.steps;
-const remaining = max - value;
+const salesPersonProfits = /*[[${salesPersonProfits}]]*/ {};
+let value = null;
+let max = null;
+let remaining = null;
+
+const firstRecord = Object.entries(salesPersonProfits)[0]; // First record
+
+if (firstRecord) { //Extracting current value and max value
+
+     // firstProfit defined here
+    const [firstName, firstProfit] = firstRecord;
+    console.log(`First Sales Person: ${firstName}, Profit: ${firstProfit}`);
+
+    // Find the maximum profit
+    const maxProfitRecord = Object.entries(salesPersonProfits).reduce((max, current) => {
+        return parseFloat(current[1]) > parseFloat(max[1]) ? current : max;
+    });
+
+    const [maxName, maxProfit] = maxProfitRecord;
+    console.log(`Top Sales Person: ${maxName}, Profit: ${maxProfit}`);
+
+    // Calculate remaining profit difference
+    value = parseFloat(firstProfit);
+    max = parseFloat(maxProfit);
+    remaining = max - value;
+
+    console.log("First profit (value):", value);
+    console.log("Max profit (max):", max);
+    console.log("Remaining difference:", remaining);
+
+} else {
+    console.log("No sales data available.");
+}
+
+// Check logs
+console.log("First profit (value):", value);
+console.log("Max profit (max):", max);
+console.log("Remaining difference:", remaining);
 
 // Prepare the context for the chart
 const ctx = document.getElementById('gaugeChart').getContext('2d');
@@ -211,8 +246,6 @@ const gaugeChart = new Chart(ctx, {
         id: 'centerText',
         beforeDraw(chart) {
             const { width, height, ctx } = chart;
-            const value = chart.data.datasets[0].data[0]; // Current value
-            const max = gaugeData.max; // Total maximum
             const fraction = value / max;
             const percentage = Math.round((fraction) * 100) + '%';
 
