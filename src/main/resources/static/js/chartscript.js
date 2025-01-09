@@ -102,16 +102,12 @@ function sortChartData(chartId, sortType) {
     chart.update();
 }
 
-
-
 let doughnutChart = null;  // Global variable to store chart instance
 
 // Function to create 
 function createDoughnutChart(salesPersonProfits) {
-    console.log("salesPersonProfits in func js:", salesPersonProfits);
+    // console.log("salesPersonProfits in func js:", salesPersonProfits);
     let value = null;
-    let max = null;
-    let remaining = null;
 
     // Get selected salesperson from the dropdown
     const selectedSalesPerson = document.getElementById("salesPersonSelect").value;
@@ -134,10 +130,12 @@ function createDoughnutChart(salesPersonProfits) {
     const maxProfitRecord = Object.entries(salesPersonProfits).reduce((max, current) => {
         return parseFloat(current[1]) > parseFloat(max[1]) ? current : max;
     });
-    max = parseFloat(maxProfitRecord[1]);
+    const max = parseFloat(maxProfitRecord[1]);
 
     // Calculate remaining profit difference
-    remaining = max - value;
+    const remaining = max - value;
+
+    const fraction = value / max;
 
     // Destroy the previous chart if it exists
     if (doughnutChart) {
@@ -147,9 +145,13 @@ function createDoughnutChart(salesPersonProfits) {
     console.log("value: ", value);
     console.log("max: ", max);
     console.log("remaining: ", remaining);
+    console.log("fraction: ", fraction);
 
     // Prepare the context for the chart
     const ctx = document.getElementById('doughnutChart').getContext('2d');
+
+    // Varying color for graph
+    const backgroundColors = getColorBasedOnValue(fraction);
 
     // Create the chart
     doughnutChart = new Chart(ctx, {
@@ -157,7 +159,7 @@ function createDoughnutChart(salesPersonProfits) {
         data: {
             datasets: [{
                 data: [value, remaining], // Dynamic data: value, remaining
-                backgroundColor: ['rgba(75, 192, 192, 0.5)', 'rgba(75, 192, 192, 0.2)'],
+                backgroundColor: backgroundColors,
                 borderWidth: 0,
             }]
         },
@@ -256,7 +258,23 @@ function createDoughnutChart(salesPersonProfits) {
                 ctx.closePath();
                 ctx.fillStyle = 'rgba(75, 192, 192, 1)';
                 ctx.fill();
+
+                // Draw text at the bottom indicating the salesperson
+                const selectedSalesPerson = document.getElementById("salesPersonSelect").value;
+                ctx.font = '24px Arial';
+                ctx.fillStyle = 'black';
+                ctx.fillText(`Employee: ${selectedSalesPerson}`, width / 2, height - 20);
             }
         }]
     });
+}
+
+function getColorBasedOnValue(fraction) { 
+    if (fraction < 0.25) {
+        return ['rgba(255, 0, 0, 0.5)', 'rgba(255, 0, 0, 0.2)'];  // Czerwony
+    } else if (fraction > 0.75) {
+        return ['rgba(25, 161, 25, 0.5)', 'rgba(0, 255, 0, 0.2)'];  // Zielony
+    } else {
+        return ['rgba(75, 192, 192, 0.5)', 'rgba(75, 192, 192, 0.2)']; // Domyślny kolor (niebieski)
+    }
 }

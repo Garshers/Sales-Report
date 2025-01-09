@@ -28,14 +28,16 @@
         <canvas id="salesPersonChart"></canvas>
     </div>
 
-    <!-- Dropdown menu for selecting a salesperson -->
-    <select id="salesPersonSelect">
-        <option value="">-- Select Salesperson --</option>
-        <!-- Options will be dynamically populated here -->
-    </select>
+    <div class="salesPersonSelection">
+        <!-- Dropdown menu for selecting a salesperson -->
+        <select id="salesPersonSelect">
+            <option value="">-- Select Salesperson --</option>
+            <!-- Options will be dynamically populated here -->
+        </select>
 
-    <!-- Button to submit the selection and create the doughnut chart -->
-    <button onclick="showProfit()">Show Profit</button>
+        <!-- Button to submit the selection and create the doughnut chart -->
+        <button onclick="showProfit()">Show Profit</button>
+    </div>
 
     <!-- Sales Person Chart Doughnut -->
     <div class="chart-container">
@@ -58,9 +60,10 @@
         const salesLabels = /*[[${chartData.labels}]]*/ [];
         const salesDataValues = /*[[${chartData.values}]]*/ [];
 
-        const salesPersonProfits = /*[[${salesPersonProfits}]]*/ [];
         const salesPersonLabels = /*[[${salesPersonProfits.keySet()}]]*/ [];
         const salesPersonDataValues = /*[[${salesPersonProfits.values()}]]*/ [];
+
+        const salesPersonProfits = /*[[${salesPersonProfits}]]*/ [];
 
         // Log data to console for debugging
         console.log('Sales Labels:', salesLabels);

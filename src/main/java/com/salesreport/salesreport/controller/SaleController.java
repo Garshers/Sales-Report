@@ -124,9 +124,11 @@ public class SaleController {
                 Long productId = sale.getProductId();  
                 BigDecimal price = sale.getPrice(); 
                 String productTypeName = correspondingStock.getProductType() + " " + correspondingStock.getProductName();
-                Long salesPersonId = (correspondingSalesPerson != null) ? correspondingSalesPerson.getSalesPersonId() : -1L;
-                String salesPersonNameSurname = (correspondingSalesPerson != null) ? 
-                    correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname() : "";
+                Long salesPersonId = (correspondingSalesPerson != null) 
+                    ? correspondingSalesPerson.getSalesPersonId() : -1L;
+                String salesPersonNameSurname = (correspondingSalesPerson != null) 
+                    ? correspondingSalesPerson.getName() + " " + correspondingSalesPerson.getSurname() 
+                    : "";
 
                 HashMap<String, Object> saleDetails = new HashMap<>();
                 saleDetails.put("saleId", saleId);

@@ -80,7 +80,7 @@ a:hover {
 }
 
 /* Styling the filter buttons */
-button {
+button{
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -94,6 +94,23 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+salesPersonSelection{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#salesPersonSelect{
+    border: 1px solid #4CAF50;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
