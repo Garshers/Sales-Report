@@ -10,7 +10,7 @@ Before you can run the application, ensure you have the following installed:
 - **JDK** (Java Development Kit) - [Download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - **Maven** - [Download](https://maven.apache.org/download.cgi)
 - **MySQL** - A MySQL database server (can be set up via XAMPP or installed independently).
-- **IDE**: IntelliJ IDEA, Eclipse, or any other Java IDE.
+- **IDE**: IntelliJ IDEA, Eclipse, VS code, or any other Java IDE.
 - **Web Browser**: Any modern browser (e.g., Google Chrome, Firefox).
 
 ### XAMPP Setup Instructions
@@ -32,16 +32,21 @@ Before you can run the application, ensure you have the following installed:
 ## Features
 
 - **View Sales Report**: Displays the sales data in a table format. Tables are interactive (on hoover), and allowing the user to sort every column.
-- **Interactive Sales Chart**: Charts that display total profit per product, and total profit per employee. Charts are interactive, allowing the user to filter the data by the smallest or largest sum of total profit.
-- **Dynamic Data Rendering**: The sales data is fetched from a MySQL database and displayed dynamically using Thymeleaf templates.
+- **Interactive Sales Chart**: Display the total profit per product and the total profit per employee using interactive bar, pie, and doughnut charts. The charts are interactive, allowing users to filter data based on the smallest or largest total profit. For the doughnut chart, users can filter data by individual employee.
 - **Spring Data JPA Integration**: The application interacts with a MySQL database via Spring Data JPA to fetch the sales data.
+- **Dynamic Data Rendering**: The sales data is displayed dynamically using Thymeleaf templates.
 - **Simple Backend and Frontend Integration**: The Spring Boot controller handles business logic, and Thymeleaf renders the HTML view with the fetched data.
-- **CSS Styling**: The report page is styled with a custom CSS file (`style.css`) to ensure it is visually appealing.
+- **CSS Styling**: The report page is styled with a custom CSS files to ensure it is visually appealing.
 - **Java Script**: Enables creation of sorting algoritms as well as creating tables and charts.
 
 ## Examples
-![Sales Report Tables](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/sales-report-tables.gif)
-![Sales Report Charts](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/sales-report-charts.gif)
+
+### Sales Page
+![Sales Report Tables](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/sales-sort.gif)
+![Sales Report Export](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/sales-export.gif)
+
+### Charts Page
+![Sales Report Charts](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/charts.gif)
 
 ## Technologies Used
 This project is built using the following technologies:
