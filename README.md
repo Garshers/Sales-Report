@@ -42,11 +42,11 @@ Before you can run the application, ensure you have the following installed:
 ## Examples
 
 ### Sales Page
-![Sales Report Tables](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/sales-sort.gif)
-![Sales Report Export](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/sales-export.gif)
+![Sales Report Tables](src/main/resources/static/images/README/sales-sort.gif)
+![Sales Report Export](src/main/resources/static/images/README/sales-export.gif)
 
 ### Charts Page
-![Sales Report Charts](https://github.com/Garshers/Sales-Report/blob/main/src/main/resources/static/Images/README/charts.gif)
+![Sales Report Charts](src/main/resources/static/images/README/charts.gif)
 
 ## Technologies Used
 This project is built using the following technologies:
